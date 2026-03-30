@@ -12,6 +12,7 @@
 
 - (2026-03-30, multimodal_playground_mvp_20260330) Do not build new structured-output flows around deprecated `generateObject()` when the current docs recommend `generateText()` with `output`.
 - (2026-03-30, multimodal_playground_mvp_20260330) Provider support varies by modality; a package that works for text may not cleanly support image, speech, transcription, or video.
+- (2026-03-30, multimodal_playground_mvp_20260330) OpenRouter image support should come from catalog filtering on output modalities, not from the text default model assumption.
 
 ## Patterns That Worked Well
 
