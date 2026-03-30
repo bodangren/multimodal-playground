@@ -34,30 +34,30 @@
 
 ## Phase 3: Speech And Transcription
 
-- [ ] Task: Implement speech generation.
-  - [ ] Write failing tests for empty text, voice selection, normalized audio payloads, and missing-audio failures.
-  - [ ] Implement `src/lib/generate-speech.ts`, `app/api/generate-speech/route.ts`, and `scripts/test-speech.ts`.
-  - [ ] Save generated speech output to `output/` during local verification.
-- [ ] Task: Implement audio transcription.
-  - [ ] Write failing tests for missing audio, invalid media type, normalized transcript responses, and missing-text failures.
-  - [ ] Implement `src/lib/transcribe-audio.ts`, `app/api/transcribe/route.ts`, and `scripts/test-transcribe.ts`.
-  - [ ] Add a fixture audio file contract for `fixtures/sample-audio.mp3`.
-- [ ] Task: Harden media capability detection for audio paths.
-  - [ ] Write failing tests for unsupported speech or transcription model combinations.
-  - [ ] Implement clear runtime capability checks and error messages for unsupported modalities.
-  - [ ] Introduce fallback provider wiring only if OpenRouter fails cleanly verified speech or transcription needs.
+- [x] Task: Implement speech generation. (b9fb7f4)
+  - [x] Write failing tests for empty text, voice selection, normalized audio payloads, and missing-audio failures.
+  - [x] Implement `src/lib/generate-speech.ts`, `app/api/generate-speech/route.ts`, and `scripts/test-speech.ts`.
+  - [x] Save generated speech output to `output/` during local verification.
+- [x] Task: Implement audio transcription. (b9fb7f4)
+  - [x] Write failing tests for missing audio, invalid media type, normalized transcript responses, and missing-text failures.
+  - [x] Implement `src/lib/transcribe-audio.ts`, `app/api/transcribe/route.ts`, and `scripts/test-transcribe.ts`.
+  - [x] Add a fixture audio file contract for `fixtures/sample-audio.mp3`.
+- [x] Task: Harden media capability detection for audio paths. (b9fb7f4)
+  - [x] Write failing tests for unsupported speech or transcription model combinations.
+  - [x] Implement clear runtime capability checks and error messages for unsupported modalities.
+  - [x] Introduce fallback provider wiring only if OpenRouter fails cleanly verified speech or transcription needs.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Speech And Transcription' (Protocol in workflow.md)
 
 ## Phase 4: Video, UI, And Final Verification
 
-- [ ] Task: Implement video generation.
-  - [ ] Write failing tests for prompt validation, normalized first-video response shape, and missing-video failures.
-  - [ ] Implement `src/lib/generate-video.ts`, `app/api/generate-video/route.ts`, and `scripts/test-video.ts`.
-  - [ ] Use a fallback provider adapter if OpenRouter does not expose a viable video path.
-- [ ] Task: Build the internal multimodal testing page.
-  - [ ] Write failing component or route interaction tests for one form per modality and result rendering.
-  - [ ] Implement `app/page.tsx` with sections for text, structured, image, speech, transcription, and video.
-  - [ ] Render images, audio, video, and formatted JSON using normalized route outputs.
+- [x] Task: Implement video generation. (2391136)
+  - [x] Write failing tests for prompt validation, normalized first-video response shape, and missing-video failures.
+  - [x] Implement `src/lib/generate-video.ts`, `app/api/generate-video/route.ts`, and `scripts/test-video.ts`.
+  - [x] Use a fallback provider adapter if OpenRouter does not expose a viable video path.
+- [x] Task: Build the internal multimodal testing page. (2391136)
+  - [x] Write failing component or route interaction tests for one form per modality and result rendering.
+  - [x] Implement `app/page.tsx` with sections for text, structured, image, speech, transcription, and video.
+  - [x] Render images, audio, video, and formatted JSON using normalized route outputs.
 - [ ] Task: Run final verification and document operator usage.
   - [ ] Execute lint, typecheck, route tests, and all modality verification scripts.
   - [ ] Document `.env.local`, script usage, route payloads, and any provider-specific caveats.
