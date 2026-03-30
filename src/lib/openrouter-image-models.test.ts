@@ -98,4 +98,53 @@ describe('openrouter image model discovery', () => {
       )
     ).toThrow('Model openai/gpt-4o-mini does not support image generation');
   });
+
+  it('falls back to the first image-capable model when no preferred model is supplied', async () => {
+    const { selectOpenRouterImageModelId } = await import('./openrouter-image-models');
+
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            data: [
+              {
+                id: 'openai/gpt-4o-mini',
+                architecture: {
+                  output_modalities: ['text'],
+                },
+              },
+              {
+                id: 'black-forest-labs/flux-schnell',
+                architecture: {
+                  output_modalities: ['image'],
+                },
+              },
+            ],
+          }),
+          {
+            status: 200,
+            headers: {
+              'content-type': 'application/json',
+            },
+          }
+        )
+      )
+    );
+
+    await expect(selectOpenRouterImageModelId()).resolves.toBe('black-forest-labs/flux-schnell');
+  });
+
+  it('normalizes OpenRouter catalog failures', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response('nope', {
+        status: 500,
+      })
+    );
+    vi.stubGlobal('fetch', fetchMock);
+
+    const { listOpenRouterModels } = await import('./openrouter-image-models');
+
+    await expect(listOpenRouterModels()).rejects.toThrow('OpenRouter model catalog request failed with status 500');
+  });
 });

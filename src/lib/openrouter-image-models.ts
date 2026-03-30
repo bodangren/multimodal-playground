@@ -90,3 +90,16 @@ export async function getDefaultOpenRouterImageModelId(options: ImageModelSelect
   const models = await listOpenRouterImageModels();
   return resolveImageModelId(models, options);
 }
+
+export async function selectOpenRouterImageModelId(preferredModelId?: string) {
+  const models = await listOpenRouterImageModels();
+
+  if (preferredModelId) {
+    return resolveImageModelId(models, {
+      preferredModelId,
+      allowFallback: false,
+    });
+  }
+
+  return resolveImageModelId(models);
+}

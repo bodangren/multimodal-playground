@@ -24,10 +24,18 @@ describe('provider', () => {
     process.env.OPENROUTER_API_KEY = 'test-key';
     process.env.OPENROUTER_TEXT_MODEL = 'custom/model';
 
-    const { getCompletionModel, getDefaultTextModelId, getImageModel } = await import('./provider');
+    const {
+      getCompletionModel,
+      getDefaultTextModelId,
+      getImageModel,
+      getOpenRouterApiUrl,
+      getOpenRouterAuthHeaders,
+    } = await import('./provider');
 
     expect(getDefaultTextModelId()).toBe('custom/model');
     expect(getCompletionModel('custom/model')).toBeDefined();
     expect(getImageModel('custom/model')).toBeDefined();
+    expect(getOpenRouterAuthHeaders()).toEqual({ Authorization: 'Bearer test-key' });
+    expect(getOpenRouterApiUrl('/models')).toBe('https://openrouter.ai/api/v1/models');
   });
 });
