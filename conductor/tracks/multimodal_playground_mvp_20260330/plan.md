@@ -22,10 +22,10 @@
   - [ ] Write failing route tests for `POST /api/generate-structured` with the `product` schema.
   - [ ] Implement `app/api/generate-structured/route.ts` and `scripts/test-structured.ts`.
   - [ ] Validate returned objects against Zod before responding.
-- [ ] Task: Implement image-model discovery and capability checks.
-  - [ ] Write failing tests for image-model listing, default-model fallback selection, and unsupported-image-model failures.
-  - [ ] Implement `scripts/list-openrouter-image-models.ts` and the image model selection helper.
-  - [ ] Record any provider capability gaps in `tech-debt.md` instead of hiding them in code.
+- [x] Task: Implement image-model discovery and capability checks. (c5a1667)
+  - [x] Write failing tests for image-model listing, default-model fallback selection, and unsupported-image-model failures.
+  - [x] Implement `scripts/list-openrouter-image-models.ts` and the image model selection helper.
+  - [x] Record any provider capability gaps in `tech-debt.md` instead of hiding them in code.
 - [ ] Task: Implement image generation.
   - [ ] Write failing tests for prompt validation, normalized image payload shape, and missing-image failures.
   - [ ] Implement `src/lib/generate-image.ts`, `app/api/generate-image/route.ts`, and `scripts/test-image.ts`.
