@@ -1,12 +1,31 @@
 import 'dotenv/config';
 
-import { generateStructuredProduct } from '../src/lib/generate-structured';
-
 const prompt = process.argv.slice(2).join(' ').trim() || 'Create a sample product summary for a productivity app.';
+const routeUrl = process.env.STRUCTURED_ROUTE_URL || 'http://127.0.0.1:3000/api/generate-structured';
 
-const result = await generateStructuredProduct({
-  prompt,
-  schema: 'product',
+const response = await fetch(routeUrl, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    prompt,
+    schema: 'product',
+  }),
 });
 
-console.log(JSON.stringify(result.data, null, 2));
+const payload: unknown = await response.json();
+
+if (!response.ok) {
+  const message =
+    typeof payload === 'object' &&
+    payload !== null &&
+    'error' in payload &&
+    typeof (payload as { error?: unknown }).error === 'string'
+      ? (payload as { error: string }).error
+      : 'Structured generation failed';
+
+  throw new Error(message);
+}
+
+console.log(JSON.stringify(payload, null, 2));
