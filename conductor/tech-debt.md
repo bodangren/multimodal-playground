@@ -8,5 +8,5 @@
 
 | Date | Track | Item | Severity | Status | Notes |
 |------|-------|------|----------|--------|-------|
-| 2026-03-30 | multimodal_playground_mvp_20260330 | Video support may require a non-OpenRouter provider because OpenRouter's public model filters currently expose text, image, audio, and embeddings modalities but not video. | Medium | Open | Confirm during implementation before locking the video adapter boundary. |
+| 2026-03-30 | multimodal_playground_mvp_20260330 | OpenRouter does not expose speech, transcription, or video model methods in this SDK, so the MVP uses OpenAI for audio and Google for video behind the shared provider boundary. | Medium | Open | Keep the fallback provider boundary isolated and revisit if OpenRouter adds first-class audio/video surfaces. |
 | 2026-03-30 | multimodal_playground_mvp_20260330 | Experimental AI SDK media APIs may change shape; pin versions tightly before production use. | Medium | Open | Protects the project from silent breaking changes in image, speech, transcription, and video helpers. |
