@@ -18,10 +18,10 @@
 
 ## Phase 2: Structured Output And Image Generation
 
-- [ ] Task: Complete structured-output route wiring and verification.
-  - [ ] Write failing route tests for `POST /api/generate-structured` with the `product` schema.
-  - [ ] Implement `app/api/generate-structured/route.ts` and `scripts/test-structured.ts`.
-  - [ ] Validate returned objects against Zod before responding.
+- [x] Task: Complete structured-output route wiring and verification. (65478ae)
+  - [x] Write failing route tests for `POST /api/generate-structured` with the `product` schema.
+  - [x] Implement `app/api/generate-structured/route.ts` and `scripts/test-structured.ts`.
+  - [x] Validate returned objects against Zod before responding.
 - [x] Task: Implement image-model discovery and capability checks. (c5a1667)
   - [x] Write failing tests for image-model listing, default-model fallback selection, and unsupported-image-model failures.
   - [x] Implement `scripts/list-openrouter-image-models.ts` and the image model selection helper.
