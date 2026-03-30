@@ -26,10 +26,10 @@
   - [x] Write failing tests for image-model listing, default-model fallback selection, and unsupported-image-model failures.
   - [x] Implement `scripts/list-openrouter-image-models.ts` and the image model selection helper.
   - [x] Record any provider capability gaps in `tech-debt.md` instead of hiding them in code.
-- [ ] Task: Implement image generation.
-  - [ ] Write failing tests for prompt validation, normalized image payload shape, and missing-image failures.
-  - [ ] Implement `src/lib/generate-image.ts`, `app/api/generate-image/route.ts`, and `scripts/test-image.ts`.
-  - [ ] Start with `n = 1`, `aspectRatio = '16:9'`, and `seed = 42` without assuming `size` support.
+- [x] Task: Implement image generation. (ca8a59a)
+  - [x] Write failing tests for prompt validation, normalized image payload shape, and missing-image failures.
+  - [x] Implement `src/lib/generate-image.ts`, `app/api/generate-image/route.ts`, and `scripts/test-image.ts`.
+  - [x] Start with `n = 1`, `aspectRatio = '16:9'`, and `seed = 42` without assuming `size` support.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Structured Output And Image Generation' (Protocol in workflow.md)
 
 ## Phase 3: Speech And Transcription
