@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+config();
 
 const prompt = process.argv.slice(2).join(' ').trim() || 'Create a sample product summary for a productivity app.';
 const routeUrl = process.env.STRUCTURED_ROUTE_URL || 'http://127.0.0.1:3000/api/generate-structured';

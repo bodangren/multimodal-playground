@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+config();
 
 import { readFile } from 'node:fs/promises';
 import { extname, join } from 'node:path';

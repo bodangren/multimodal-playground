@@ -1,4 +1,6 @@
-import 'dotenv/config';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+config();
 
 import { listOpenRouterImageModels } from '../src/lib/openrouter-image-models';
 
