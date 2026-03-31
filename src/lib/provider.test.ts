@@ -5,6 +5,8 @@ describe('provider', () => {
     vi.resetModules();
     delete process.env.OPENROUTER_API_KEY;
     delete process.env.OPENROUTER_TEXT_MODEL;
+    delete process.env.OPENROUTER_SPEECH_MODEL;
+    delete process.env.OPENROUTER_TRANSCRIPTION_MODEL;
     delete process.env.OPENAI_API_KEY;
     delete process.env.OPENAI_SPEECH_MODEL;
     delete process.env.OPENAI_TRANSCRIPTION_MODEL;
@@ -46,8 +48,8 @@ describe('provider', () => {
     } = await import('./provider');
 
     expect(getDefaultTextModelId()).toBe('custom/model');
-    expect(getDefaultSpeechModelId()).toBe('gpt-4o-mini-tts');
-    expect(getDefaultTranscriptionModelId()).toBe('gpt-4o-mini-transcribe');
+    expect(getDefaultSpeechModelId()).toBe('alibaba/wan-2.6');
+    expect(getDefaultTranscriptionModelId()).toBe('openrouter/free');
     expect(getDefaultVideoModelId()).toBe('veo-2.0-generate-001');
     expect(getCompletionModel('custom/model')).toBeDefined();
     expect(getImageModel('custom/model')).toBeDefined();

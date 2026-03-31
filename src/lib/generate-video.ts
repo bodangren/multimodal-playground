@@ -31,6 +31,10 @@ export async function generateVideoFromPrompt(input: VideoGenerationInput): Prom
   const { prompt, modelId } = VideoGenerationInputSchema.parse(input);
   const resolvedModelId = modelId ?? getDefaultVideoModelId();
 
+  if (resolvedModelId.includes('/')) {
+    throw new Error('OpenRouter video generation is still alpha and is not implemented in this app yet');
+  }
+
   try {
     const result = await experimental_generateVideo({
       model: getVideoModel(resolvedModelId),

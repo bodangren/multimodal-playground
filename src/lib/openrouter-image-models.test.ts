@@ -7,20 +7,15 @@ describe('openrouter image model discovery', () => {
     process.env.OPENROUTER_API_KEY = 'test-key';
   });
 
-  it('filters image-capable models from the OpenRouter catalog', async () => {
+  it('filters text-to-image models from the OpenRouter catalog', async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(
         JSON.stringify({
           data: [
             {
-              id: 'openai/gpt-4o-mini',
+              id: 'black-forest-labs/flux.2-pro',
               architecture: {
-                output_modalities: ['text'],
-              },
-            },
-            {
-              id: 'black-forest-labs/flux-schnell',
-              architecture: {
+                input_modalities: ['text', 'image'],
                 output_modalities: ['image'],
               },
             },
@@ -41,14 +36,15 @@ describe('openrouter image model discovery', () => {
 
     expect(models).toEqual([
       {
-        id: 'black-forest-labs/flux-schnell',
+        id: 'black-forest-labs/flux.2-pro',
         architecture: {
+          input_modalities: ['text', 'image'],
           output_modalities: ['image'],
         },
       },
     ]);
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://openrouter.ai/api/v1/models',
+      'https://openrouter.ai/api/v1/models?input_modalities=text&output_modalities=image',
       expect.objectContaining({
         headers: expect.objectContaining({
           Authorization: 'Bearer test-key',
@@ -57,7 +53,7 @@ describe('openrouter image model discovery', () => {
     );
   });
 
-  it('falls back to the first supported image model when the preferred model is not image-capable', async () => {
+  it('falls back to the first supported image model when the preferred model is not text-to-image capable', async () => {
     const { resolveImageModelId } = await import('./openrouter-image-models');
 
     expect(
@@ -70,15 +66,16 @@ describe('openrouter image model discovery', () => {
             },
           },
           {
-            id: 'black-forest-labs/flux-schnell',
+            id: 'black-forest-labs/flux.2-pro',
             architecture: {
+              input_modalities: ['text', 'image'],
               output_modalities: ['image'],
             },
           },
         ],
         { preferredModelId: 'openai/gpt-4o-mini' }
       )
-    ).toBe('black-forest-labs/flux-schnell');
+    ).toBe('black-forest-labs/flux.2-pro');
   });
 
   it('rejects unsupported image model selections when fallback is disabled', async () => {
@@ -99,7 +96,7 @@ describe('openrouter image model discovery', () => {
     ).toThrow('Model openai/gpt-4o-mini does not support image generation');
   });
 
-  it('falls back to the first image-capable model when no preferred model is supplied', async () => {
+  it('falls back to the first text-to-image capable model when no preferred model is supplied', async () => {
     const { selectOpenRouterImageModelId } = await import('./openrouter-image-models');
 
     vi.stubGlobal(
@@ -109,14 +106,9 @@ describe('openrouter image model discovery', () => {
           JSON.stringify({
             data: [
               {
-                id: 'openai/gpt-4o-mini',
+                id: 'black-forest-labs/flux.2-pro',
                 architecture: {
-                  output_modalities: ['text'],
-                },
-              },
-              {
-                id: 'black-forest-labs/flux-schnell',
-                architecture: {
+                  input_modalities: ['text', 'image'],
                   output_modalities: ['image'],
                 },
               },
@@ -132,7 +124,46 @@ describe('openrouter image model discovery', () => {
       )
     );
 
-    await expect(selectOpenRouterImageModelId()).resolves.toBe('black-forest-labs/flux-schnell');
+    await expect(selectOpenRouterImageModelId()).resolves.toBe('black-forest-labs/flux.2-pro');
+  });
+
+  it('accepts image-only output models when they take text input', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            data: [
+              {
+                id: 'text-to-image/model',
+                architecture: {
+                  input_modalities: ['text'],
+                  output_modalities: ['image'],
+                },
+              },
+            ],
+          }),
+          {
+            status: 200,
+            headers: {
+              'content-type': 'application/json',
+            },
+          }
+        )
+      )
+    );
+
+    const { listOpenRouterImageModels } = await import('./openrouter-image-models');
+
+    await expect(listOpenRouterImageModels()).resolves.toEqual([
+      {
+        id: 'text-to-image/model',
+        architecture: {
+          input_modalities: ['text'],
+          output_modalities: ['image'],
+        },
+      },
+    ]);
   });
 
   it('normalizes OpenRouter catalog failures', async () => {

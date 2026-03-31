@@ -24,6 +24,7 @@ export async function generateStructuredProduct(input: StructuredGenerationInput
   try {
     const result = await generateText({
       model: getTextModel(modelId ?? getDefaultTextModelId()),
+      system: 'Respond with valid json that conforms to the schema.',
       prompt,
       output,
     });

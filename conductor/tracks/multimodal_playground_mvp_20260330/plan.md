@@ -58,8 +58,8 @@
   - [x] Write failing component or route interaction tests for one form per modality and result rendering.
   - [x] Implement `app/page.tsx` with sections for text, structured, image, speech, transcription, and video.
   - [x] Render images, audio, video, and formatted JSON using normalized route outputs.
-- [ ] Task: Run final verification and document operator usage.
-  - [ ] Execute lint, typecheck, route tests, and all modality verification scripts.
-  - [ ] Document `.env.local`, script usage, route payloads, and any provider-specific caveats.
-  - [ ] Capture unresolved experimental-API risks in `tech-debt.md`.
+- [x] Task: Run final verification and document operator usage.
+  - [x] Execute lint, typecheck, route tests, and all modality verification scripts.
+  - [x] Document `.env.local`, script usage, route payloads, and any provider-specific caveats.
+  - [x] Capture unresolved experimental-API risks in `tech-debt.md`.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Video, UI, And Final Verification' (Protocol in workflow.md)

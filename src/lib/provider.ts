@@ -6,10 +6,10 @@ import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 
 export const OPENROUTER_API_BASE_URL = 'https://openrouter.ai/api/v1/';
 
-const DEFAULT_TEXT_MODEL_ID = process.env.OPENROUTER_TEXT_MODEL?.trim() || 'openai/gpt-4o-mini';
-const DEFAULT_SPEECH_MODEL_ID = process.env.OPENAI_SPEECH_MODEL?.trim() || 'gpt-4o-mini-tts';
+const DEFAULT_TEXT_MODEL_ID = process.env.OPENROUTER_TEXT_MODEL?.trim() || 'openrouter/free';
+const DEFAULT_SPEECH_MODEL_ID = process.env.OPENROUTER_SPEECH_MODEL?.trim() || 'alibaba/wan-2.6';
 const DEFAULT_TRANSCRIPTION_MODEL_ID =
-  process.env.OPENAI_TRANSCRIPTION_MODEL?.trim() || 'gpt-4o-mini-transcribe';
+  process.env.OPENROUTER_TRANSCRIPTION_MODEL?.trim() || 'openrouter/free';
 const DEFAULT_VIDEO_MODEL_ID = process.env.GOOGLE_VIDEO_MODEL?.trim() || 'veo-2.0-generate-001';
 
 let openRouterInstance: ReturnType<typeof createOpenRouter> | null = null;
@@ -107,7 +107,7 @@ export function getCompletionModel(modelId = DEFAULT_TEXT_MODEL_ID) {
   return getOpenRouterProvider().completion(modelId);
 }
 
-export function getImageModel(modelId = DEFAULT_TEXT_MODEL_ID) {
+export function getImageModel(modelId: string) {
   return getOpenRouterProvider().imageModel(modelId);
 }
 

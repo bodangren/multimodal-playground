@@ -13,6 +13,8 @@
 - (2026-03-30, multimodal_playground_mvp_20260330) Do not build new structured-output flows around deprecated `generateObject()` when the current docs recommend `generateText()` with `output`.
 - (2026-03-30, multimodal_playground_mvp_20260330) Provider support varies by modality; a package that works for text may not cleanly support image, speech, transcription, or video.
 - (2026-03-30, multimodal_playground_mvp_20260330) OpenRouter image support should come from catalog filtering on output modalities, not from the text default model assumption.
+- (2026-03-31, multimodal_playground_mvp_20260330) OpenRouter image-model discovery should match text input plus image output, and image-only models require `modalities: ["image"]` instead of the AI SDK adapter's mixed image-plus-text request shape.
+- (2026-03-31, multimodal_playground_mvp_20260330) OpenRouter speech output and audio transcription should use `/chat/completions` directly: speech output requires SSE with `modalities: ["text", "audio"]`, while transcription uses `input_audio` content on a non-streaming request.
 
 ## Patterns That Worked Well
 

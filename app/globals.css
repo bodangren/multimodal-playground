@@ -127,6 +127,20 @@ textarea {
   background: var(--bg-soft);
 }
 
+input,
+select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  color: var(--text);
+  background: var(--bg-soft);
+}
+
+select {
+  cursor: pointer;
+}
+
 button {
   justify-self: start;
   padding: 12px 18px;
@@ -146,6 +160,35 @@ button:disabled {
 .error {
   margin: 16px 0 0;
   color: #ffb7c8;
+}
+
+.notice,
+.helper-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.notice {
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: rgba(88, 198, 255, 0.08);
+}
+
+.result-stack {
+  display: grid;
+  gap: 14px;
+}
+
+.media-frame {
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 pre {
