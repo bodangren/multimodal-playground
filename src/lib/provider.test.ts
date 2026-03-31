@@ -7,11 +7,10 @@ describe('provider', () => {
     delete process.env.OPENROUTER_TEXT_MODEL;
     delete process.env.OPENROUTER_SPEECH_MODEL;
     delete process.env.OPENROUTER_TRANSCRIPTION_MODEL;
+    delete process.env.OPENROUTER_VIDEO_MODEL;
     delete process.env.OPENAI_API_KEY;
     delete process.env.OPENAI_SPEECH_MODEL;
     delete process.env.OPENAI_TRANSCRIPTION_MODEL;
-    delete process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    delete process.env.GOOGLE_VIDEO_MODEL;
   });
 
   it('throws when the OpenRouter API key is missing', async () => {
@@ -31,7 +30,6 @@ describe('provider', () => {
     process.env.OPENROUTER_API_KEY = 'test-key';
     process.env.OPENROUTER_TEXT_MODEL = 'custom/model';
     process.env.OPENAI_API_KEY = 'openai-key';
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY = 'google-key';
 
     const {
       getCompletionModel,
@@ -42,7 +40,6 @@ describe('provider', () => {
       getImageModel,
       getSpeechModel,
       getTranscriptionModel,
-      getVideoModel,
       getOpenRouterApiUrl,
       getOpenRouterAuthHeaders,
     } = await import('./provider');
@@ -50,12 +47,11 @@ describe('provider', () => {
     expect(getDefaultTextModelId()).toBe('custom/model');
     expect(getDefaultSpeechModelId()).toBe('alibaba/wan-2.6');
     expect(getDefaultTranscriptionModelId()).toBe('openrouter/free');
-    expect(getDefaultVideoModelId()).toBe('veo-2.0-generate-001');
+    expect(getDefaultVideoModelId()).toBe('alibaba/wan-2.6');
     expect(getCompletionModel('custom/model')).toBeDefined();
     expect(getImageModel('custom/model')).toBeDefined();
     expect(getSpeechModel('gpt-4o-mini-tts')).toBeDefined();
     expect(getTranscriptionModel('gpt-4o-mini-transcribe')).toBeDefined();
-    expect(getVideoModel('veo-2.0-generate-001')).toBeDefined();
     expect(getOpenRouterAuthHeaders()).toEqual({ Authorization: 'Bearer test-key' });
     expect(getOpenRouterApiUrl('/models')).toBe('https://openrouter.ai/api/v1/models');
   });

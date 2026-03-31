@@ -2,7 +2,6 @@ if (typeof process !== 'undefined' && process.env.NEXT_RUNTIME) {
   await import('server-only');
 }
 
-import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 
@@ -12,11 +11,10 @@ const DEFAULT_TEXT_MODEL_ID = process.env.OPENROUTER_TEXT_MODEL?.trim() || 'open
 const DEFAULT_SPEECH_MODEL_ID = process.env.OPENROUTER_SPEECH_MODEL?.trim() || 'alibaba/wan-2.6';
 const DEFAULT_TRANSCRIPTION_MODEL_ID =
   process.env.OPENROUTER_TRANSCRIPTION_MODEL?.trim() || 'openrouter/free';
-const DEFAULT_VIDEO_MODEL_ID = process.env.GOOGLE_VIDEO_MODEL?.trim() || 'veo-2.0-generate-001';
+const DEFAULT_VIDEO_MODEL_ID = process.env.OPENROUTER_VIDEO_MODEL?.trim() || 'alibaba/wan-2.6';
 
 let openRouterInstance: ReturnType<typeof createOpenRouter> | null = null;
 let openAIInstance: ReturnType<typeof createOpenAI> | null = null;
-let googleInstance: ReturnType<typeof createGoogleGenerativeAI> | null = null;
 
 export function getOpenRouterApiKey() {
   const apiKey = process.env.OPENROUTER_API_KEY?.trim();
@@ -54,25 +52,6 @@ export function getOpenAIProvider() {
   }
 
   return openAIInstance;
-}
-
-export function getGoogleApiKey() {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY?.trim();
-  if (!apiKey) {
-    throw new Error('GOOGLE_GENERATIVE_AI_API_KEY is required');
-  }
-
-  return apiKey;
-}
-
-export function getGoogleProvider() {
-  if (!googleInstance) {
-    googleInstance = createGoogleGenerativeAI({
-      apiKey: getGoogleApiKey(),
-    });
-  }
-
-  return googleInstance;
 }
 
 export function getOpenRouterAuthHeaders() {
@@ -119,8 +98,4 @@ export function getSpeechModel(modelId = DEFAULT_SPEECH_MODEL_ID) {
 
 export function getTranscriptionModel(modelId = DEFAULT_TRANSCRIPTION_MODEL_ID) {
   return getOpenAIProvider().transcription(modelId);
-}
-
-export function getVideoModel(modelId = DEFAULT_VIDEO_MODEL_ID) {
-  return getGoogleProvider().videoModel(modelId);
 }
