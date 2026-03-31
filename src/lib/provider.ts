@@ -1,4 +1,6 @@
-import 'server-only';
+if (typeof process !== 'undefined' && process.env.NEXT_RUNTIME) {
+  await import('server-only');
+}
 
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { createOpenAI } from '@ai-sdk/openai';
