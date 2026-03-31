@@ -14,7 +14,7 @@
   - [x] Write failing tests for valid text prompts, empty prompt failures, and provider error normalization.
   - [x] Implement `src/lib/generate-text.ts`, `app/api/generate-text/route.ts`, and `scripts/test-text.ts`.
   - [x] Verify the text helper logs warnings and provider metadata when available.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Foundation, Schemas, And Provider Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Foundation, Schemas, And Provider Setup' (Protocol in workflow.md)
 
 ## Phase 2: Structured Output And Image Generation
 
@@ -30,7 +30,7 @@
   - [x] Write failing tests for prompt validation, normalized image payload shape, and missing-image failures.
   - [x] Implement `src/lib/generate-image.ts`, `app/api/generate-image/route.ts`, and `scripts/test-image.ts`.
   - [x] Start with `n = 1`, `aspectRatio = '16:9'`, and `seed = 42` without assuming `size` support.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Structured Output And Image Generation' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Structured Output And Image Generation' (Protocol in workflow.md)
 
 ## Phase 3: Speech And Transcription
 
@@ -46,7 +46,7 @@
   - [x] Write failing tests for unsupported speech or transcription model combinations.
   - [x] Implement clear runtime capability checks and error messages for unsupported modalities.
   - [x] Introduce fallback provider wiring only if OpenRouter fails cleanly verified speech or transcription needs.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Speech And Transcription' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Speech And Transcription' (Protocol in workflow.md)
 
 ## Phase 4: Video, UI, And Final Verification
 
@@ -62,4 +62,4 @@
   - [x] Execute lint, typecheck, route tests, and all modality verification scripts.
   - [x] Document `.env.local`, script usage, route payloads, and any provider-specific caveats.
   - [x] Capture unresolved experimental-API risks in `tech-debt.md`.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Video, UI, And Final Verification' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Video, UI, And Final Verification' (Protocol in workflow.md)

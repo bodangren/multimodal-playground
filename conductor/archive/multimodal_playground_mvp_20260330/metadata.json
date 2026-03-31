@@ -1,0 +1,11 @@
+{
+  "track_id": "multimodal_playground_mvp_20260330",
+  "type": "feature",
+  "status": "completed",
+  "created_at": "2026-03-30T09:15:31Z",
+  "updated_at": "2026-03-31T21:45:00Z",
+  "description": "OpenRouter-first multimodal playground MVP",
+  "estimated_tasks": 16,
+  "actual_tasks": 13,
+  "deviation_notes": "Speech panel deferred (no OpenRouter TTS models); video switched from Google Veo to direct OpenRouter API."
+}
