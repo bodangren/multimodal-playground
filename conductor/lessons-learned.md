@@ -15,6 +15,7 @@
 - (2026-03-30, multimodal_playground_mvp_20260330) OpenRouter image support should come from catalog filtering on output modalities, not from the text default model assumption.
 - (2026-03-31, multimodal_playground_mvp_20260330) OpenRouter image-model discovery should match text input plus image output, and image-only models require `modalities: ["image"]` instead of the AI SDK adapter's mixed image-plus-text request shape.
 - (2026-03-31, multimodal_playground_mvp_20260330) OpenRouter speech output and audio transcription should use `/chat/completions` directly: speech output requires SSE with `modalities: ["text", "audio"]`, while transcription uses `input_audio` content on a non-streaming request.
+- (2026-04-01, speech_ui_reenable_20260401) OpenAI audio output via SSE streaming only supports `pcm16` format — `mp3` and `wav` are rejected when `stream: true`. Wrap pcm16 bytes in a WAV container for browser playback.
 
 ## Patterns That Worked Well
 

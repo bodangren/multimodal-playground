@@ -42,9 +42,6 @@ type SpeechResponse = {
   warnings: Array<{ message?: string; details?: string }>;
 };
 
-// Speech generation disabled — OpenRouter has no TTS models available yet.
-// Keeping types for future re-enablement.
-
 type TranscriptionResponse = {
   text: string;
   segments: Array<{ text: string; startSecond: number; endSecond: number }>;
@@ -69,6 +66,7 @@ type VideoResponse = {
 type PlaygroundClientProps = {
   textModelOptions: OpenRouterModelOption[];
   imageModelOptions: OpenRouterModelOption[];
+  speechModelOptions: OpenRouterModelOption[];
   transcriptionModelOptions: OpenRouterModelOption[];
   videoModelOptions: OpenRouterModelOption[];
   modelLoadError: string | null;
@@ -168,6 +166,7 @@ function ModelSelect({
 export default function PlaygroundClient({
   textModelOptions,
   imageModelOptions,
+  speechModelOptions,
   transcriptionModelOptions,
   videoModelOptions,
   modelLoadError,
@@ -191,6 +190,12 @@ export default function PlaygroundClient({
   const [imageResult, setImageResult] = useState<ImageResponse | null>(null);
   const [imageError, setImageError] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
+
+  const [speechText, setSpeechText] = useState('Say hello in a friendly tone.');
+  const [speechModelId, setSpeechModelId] = useState(speechModelOptions[0]?.id ?? '');
+  const [speechResult, setSpeechResult] = useState<SpeechResponse | null>(null);
+  const [speechError, setSpeechError] = useState<string | null>(null);
+  const [speechLoading, setSpeechLoading] = useState(false);
 
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [transcriptionModelId, setTranscriptionModelId] = useState(transcriptionModelOptions[0]?.id ?? '');
@@ -259,6 +264,25 @@ export default function PlaygroundClient({
       setImageError(error instanceof Error ? error.message : 'Image generation failed');
     } finally {
       setImageLoading(false);
+    }
+  };
+
+  const submitSpeech = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSpeechLoading(true);
+    setSpeechError(null);
+
+    try {
+      const result = await postJson<SpeechResponse>('/api/generate-speech', {
+        text: speechText,
+        modelId: speechModelId || undefined,
+      });
+      setSpeechResult(result);
+    } catch (error) {
+      setSpeechResult(null);
+      setSpeechError(error instanceof Error ? error.message : 'Speech generation failed');
+    } finally {
+      setSpeechLoading(false);
     }
   };
 
@@ -389,6 +413,32 @@ export default function PlaygroundClient({
             <div className="result-stack">
               <img src={imageResult.imageDataUrl} alt={imageResult.prompt} className="media-frame" />
               <pre>{JSON.stringify(imageResult, null, 2)}</pre>
+            </div>
+          ) : null}
+        </Panel>
+
+        <Panel title="Speech generation">
+          <form onSubmit={submitSpeech} className="stack">
+            <label>
+              Text
+              <textarea value={speechText} onChange={(event) => setSpeechText(event.target.value)} rows={5} />
+            </label>
+            <ModelSelect
+              label="OpenRouter model"
+              value={speechModelId}
+              options={speechModelOptions}
+              onChange={setSpeechModelId}
+              helperText="Uses text-input, audio-output models from the OpenRouter catalog."
+            />
+            <button type="submit" disabled={speechLoading}>
+              {speechLoading ? 'Generating…' : 'Generate speech'}
+            </button>
+          </form>
+          {speechError ? <p className="error">{speechError}</p> : null}
+          {speechResult ? (
+            <div className="result-stack">
+              <audio controls src={speechResult.audioDataUrl} className="media-frame" />
+              <pre>{JSON.stringify(speechResult, null, 2)}</pre>
             </div>
           ) : null}
         </Panel>

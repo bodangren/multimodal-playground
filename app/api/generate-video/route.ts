@@ -24,18 +24,30 @@ const ResponseSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  let parsedBody: z.infer<typeof RequestSchema>;
+
   try {
-    const body = RequestSchema.parse(await request.json());
-    const result = await generateVideoFromPrompt(body);
+    parsedBody = RequestSchema.parse(await request.json());
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const message = error.issues[0]?.message ?? 'Invalid request body';
+      return NextResponse.json({ error: message }, { status: 400 });
+    }
+    const message = errorMessage(error, 'Unable to generate video');
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+
+  try {
+    const result = await generateVideoFromPrompt(parsedBody);
     const payload = ResponseSchema.parse(result);
 
     return NextResponse.json(payload);
   } catch (error) {
-    const message =
-      error instanceof z.ZodError
-        ? error.issues[0]?.message ?? 'Invalid generated video payload'
-        : errorMessage(error, 'Unable to generate video');
-
-    return NextResponse.json({ error: message }, { status: 400 });
+    if (error instanceof z.ZodError) {
+      const message = error.issues[0]?.message ?? 'Invalid generated video payload';
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
+    const message = errorMessage(error, 'Unable to generate video');
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

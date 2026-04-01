@@ -6,7 +6,6 @@ export const SpeechGenerationInputSchema = z.object({
   text: z.string().trim().min(1, 'Text is required'),
   voice: z.string().trim().min(1).optional(),
   modelId: z.string().trim().min(1).optional(),
-  outputFormat: z.enum(['mp3', 'wav']).optional(),
   instructions: z.string().trim().min(1).optional(),
   speed: z.number().positive().optional(),
   language: z.string().trim().min(1).optional(),
@@ -41,12 +40,46 @@ type OpenRouterAudioChunk = {
   }>;
 };
 
-function normalizeAudioDataUrl(mediaType: string, base64: string) {
-  return `data:${mediaType};base64,${base64}`;
+function pcm16ToWavBase64(pcmBase64: string, sampleRate = 24000): string {
+  const pcmBytes = Uint8Array.from(atob(pcmBase64), (c) => c.charCodeAt(0));
+  const numSamples = pcmBytes.length / 2;
+  const byteRate = sampleRate * 2;
+  const blockAlign = 2;
+  const dataSize = pcmBytes.length;
+  const bufferSize = 44 + dataSize;
+  const buffer = new ArrayBuffer(bufferSize);
+  const view = new DataView(buffer);
+
+  view.setUint32(0, 0x52494646, false);
+  view.setUint32(4, bufferSize - 8, true);
+  view.setUint32(8, 0x57415645, false);
+  view.setUint32(12, 0x666d7420, false);
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, byteRate, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, 16, true);
+  view.setUint32(36, 0x64617461, false);
+  view.setUint32(40, dataSize, true);
+
+  for (let i = 0; i < pcmBytes.length; i++) {
+    view.setUint8(44 + i, pcmBytes[i]);
+  }
+
+  const wavBytes = new Uint8Array(buffer);
+  let binary = '';
+  const chunkSize = 8192;
+  for (let i = 0; i < wavBytes.length; i += chunkSize) {
+    const chunk = wavBytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...chunk);
+  }
+  return btoa(binary);
 }
 
-function outputFormatToMediaType(outputFormat: 'mp3' | 'wav') {
-  return outputFormat === 'wav' ? 'audio/wav' : 'audio/mpeg';
+function normalizeAudioDataUrl(mediaType: string, base64: string) {
+  return `data:${mediaType};base64,${base64}`;
 }
 
 async function readOpenRouterError(response: Response) {
@@ -129,7 +162,7 @@ async function readAudioSseStream(response: Response) {
 }
 
 export async function generateSpeechFromText(input: SpeechGenerationInput): Promise<SpeechGenerationResult> {
-  const { text, voice, modelId, outputFormat = 'mp3', instructions, speed, language } =
+  const { text, voice, modelId, instructions, speed, language } =
     SpeechGenerationInputSchema.parse(input);
   const resolvedModelId = modelId ?? getDefaultSpeechModelId();
 
@@ -152,7 +185,7 @@ export async function generateSpeechFromText(input: SpeechGenerationInput): Prom
         modalities: ['text', 'audio'],
         audio: {
           voice: voice ?? 'alloy',
-          format: outputFormat,
+          format: 'pcm16',
         },
         instructions,
         speed,
@@ -177,8 +210,8 @@ export async function generateSpeechFromText(input: SpeechGenerationInput): Prom
       text,
       voice: voice ?? 'alloy',
       modelId: resolvedModelId,
-      audioDataUrl: normalizeAudioDataUrl(outputFormatToMediaType(outputFormat), audioBase64),
-      mediaType: outputFormatToMediaType(outputFormat),
+      audioDataUrl: normalizeAudioDataUrl('audio/wav', pcm16ToWavBase64(audioBase64)),
+      mediaType: 'audio/wav',
       response: {
         timestamp: timestamp ? new Date(timestamp).toISOString() : new Date().toISOString(),
         modelId: responseModel ?? resolvedModelId,

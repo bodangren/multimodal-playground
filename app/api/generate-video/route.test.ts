@@ -84,7 +84,7 @@ describe('POST /api/generate-video', () => {
       })
     );
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
     await expect(response.json()).resolves.toEqual({
       error: 'Too small: expected string to have >=1 characters',
     });

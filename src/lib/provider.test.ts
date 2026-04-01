@@ -45,7 +45,7 @@ describe('provider', () => {
     } = await import('./provider');
 
     expect(getDefaultTextModelId()).toBe('custom/model');
-    expect(getDefaultSpeechModelId()).toBe('alibaba/wan-2.6');
+    expect(getDefaultSpeechModelId()).toBe('openai/gpt-audio-mini');
     expect(getDefaultTranscriptionModelId()).toBe('openrouter/free');
     expect(getDefaultVideoModelId()).toBe('alibaba/wan-2.6');
     expect(getCompletionModel('custom/model')).toBeDefined();

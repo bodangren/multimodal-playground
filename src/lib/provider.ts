@@ -8,7 +8,7 @@ import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 export const OPENROUTER_API_BASE_URL = 'https://openrouter.ai/api/v1/';
 
 const DEFAULT_TEXT_MODEL_ID = process.env.OPENROUTER_TEXT_MODEL?.trim() || 'openrouter/free';
-const DEFAULT_SPEECH_MODEL_ID = process.env.OPENROUTER_SPEECH_MODEL?.trim() || 'alibaba/wan-2.6';
+const DEFAULT_SPEECH_MODEL_ID = process.env.OPENROUTER_SPEECH_MODEL?.trim() || 'openai/gpt-audio-mini';
 const DEFAULT_TRANSCRIPTION_MODEL_ID =
   process.env.OPENROUTER_TRANSCRIPTION_MODEL?.trim() || 'openrouter/free';
 const DEFAULT_VIDEO_MODEL_ID = process.env.OPENROUTER_VIDEO_MODEL?.trim() || 'alibaba/wan-2.6';

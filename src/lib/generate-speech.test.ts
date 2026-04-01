@@ -61,8 +61,8 @@ describe('generateSpeechFromText', () => {
       text: 'Hello there',
       voice: 'alloy',
       modelId: 'alibaba/wan-2.6',
-      audioDataUrl: 'data:audio/mpeg;base64,ZmFrZS1hdWRpbw==',
-      mediaType: 'audio/mpeg',
+      audioDataUrl: 'data:audio/wav;base64,UklGRi4AAABXQVZFZm10IBAAAAABAAEAwF0AAIC7AAACABAAZGF0YQoAAABmYWtlLWF1ZGlv',
+      mediaType: 'audio/wav',
       response: {
         timestamp: '2026-03-31T00:00:00.000Z',
         modelId: 'alibaba/wan-2.6',
