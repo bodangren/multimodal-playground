@@ -42,7 +42,6 @@ type OpenRouterAudioChunk = {
 
 function pcm16ToWavBase64(pcmBase64: string, sampleRate = 24000): string {
   const pcmBytes = Uint8Array.from(atob(pcmBase64), (c) => c.charCodeAt(0));
-  const numSamples = pcmBytes.length / 2;
   const byteRate = sampleRate * 2;
   const blockAlign = 2;
   const dataSize = pcmBytes.length;
