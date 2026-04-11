@@ -22,6 +22,20 @@
 - (2026-03-30, multimodal_playground_mvp_20260330) Documentation-first setup clarified modality boundaries before any framework code or provider SDK decisions.
 - (2026-03-30, multimodal_playground_mvp_20260330) Keeping one helper and one route per modality makes verification scripts and UI sections line up cleanly.
 
+## Architecture & Design
+
+- (2026-04-12, single_api_key_env_20260407) OpenAI provider (getOpenAIProvider) and its API key are not used in production code - all actual API calls go through OpenRouter. This is dead code that could be cleaned up in a future chore.
+
+## Recurring Gotchas
+
+- (2026-04-12, single_api_key_env_20260407) The page.test.tsx has a pre-existing failure - model catalog API returns "Cannot read properties of undefined (reading 'ok')" which prevents model names from displaying in the UI. This is unrelated to the single API key work.
+
+## Patterns That Worked Well
+
+- (2026-03-30, multimodal_playground_mvp_20260330) Documentation-first setup clarified modality boundaries before any framework code or provider SDK decisions.
+- (2026-03-30, multimodal_playground_mvp_20260330) Keeping one helper and one route per modality makes verification scripts and UI sections line up cleanly.
+
 ## Planning Improvements
 
 - (2026-03-30, multimodal_playground_mvp_20260330) Split baseline text/structured work from experimental media work so provider gaps do not block the entire MVP.
+- (2026-04-12, single_api_key_env_20260407) Before implementing multi-key support, verify which providers/keys are actually used in production vs dead code.
