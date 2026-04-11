@@ -19,6 +19,22 @@ describe('provider', () => {
     expect(() => getOpenRouterProvider()).toThrow('OPENROUTER_API_KEY is required');
   });
 
+  it('falls back to OPENROUTER_API_KEY when OPENAI_API_KEY is not set', async () => {
+    process.env.OPENROUTER_API_KEY = 'router-key';
+    delete process.env.OPENAI_API_KEY;
+    const { getOpenAIApiKey } = await import('./provider');
+
+    expect(getOpenAIApiKey()).toBe('router-key');
+  });
+
+  it('prefers explicit OPENAI_API_KEY over fallback', async () => {
+    process.env.OPENROUTER_API_KEY = 'router-key';
+    process.env.OPENAI_API_KEY = 'explicit-ai-key';
+    const { getOpenAIApiKey } = await import('./provider');
+
+    expect(getOpenAIApiKey()).toBe('explicit-ai-key');
+  });
+
   it('caches the OpenRouter provider instance', async () => {
     process.env.OPENROUTER_API_KEY = 'test-key';
     const { getOpenRouterProvider } = await import('./provider');

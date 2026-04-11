@@ -37,11 +37,10 @@ export function getOpenRouterProvider() {
 
 export function getOpenAIApiKey() {
   const apiKey = process.env.OPENAI_API_KEY?.trim();
-  if (!apiKey) {
-    throw new Error('OPENAI_API_KEY is required');
+  if (apiKey) {
+    return apiKey;
   }
-
-  return apiKey;
+  return getOpenRouterApiKey();
 }
 
 export function getOpenAIProvider() {

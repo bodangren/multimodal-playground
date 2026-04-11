@@ -1,0 +1,12 @@
+{
+  "track_id": "single_api_key_env_20260407",
+  "type": "feature",
+  "status": "in_progress",
+  "created_at": "2026-04-07T12:00:00Z",
+  "updated_at": "2026-04-12T07:36:00Z",
+  "description": "Support a single local API key loaded from .env without auth or rate limits.",
+  "estimated_tasks": 5,
+  "actual_tasks": 2,
+  "deviation_notes": "Phase 1 complete: OPENAI_API_KEY now falls back to OPENROUTER_API_KEY for backward compatibility."
+}
+
