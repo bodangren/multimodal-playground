@@ -23,8 +23,8 @@ Use a single API key from `.env` (or `.env.local`) as the sole credential for up
 
 ## Acceptance Criteria
 
-- [ ] One environment variable is used as the only API key source.
-- [ ] Missing-key error path is explicit and actionable.
-- [ ] README/setup docs clearly describe local key configuration.
-- [ ] Existing API flows continue to work with the configured key.
+- [x] One environment variable is used as the only API key source.
+- [x] Missing-key error path is explicit and actionable.
+- [x] README/setup docs clearly describe local key configuration.
+- [x] Existing API flows continue to work with the configured key.
 

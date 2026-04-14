@@ -1,0 +1,12 @@
+{
+  "track_id": "job_queue_retry_20260407",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-04-07T12:00:00Z",
+  "updated_at": "2026-04-07T12:00:00Z",
+  "description": "Add generation job queueing and retry semantics for long-running requests.",
+  "estimated_tasks": 6,
+  "actual_tasks": null,
+  "deviation_notes": ""
+}
+
