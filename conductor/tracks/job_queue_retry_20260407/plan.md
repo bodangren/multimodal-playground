@@ -2,12 +2,12 @@
 
 ## Phase 1: Queue Model and API Contract
 
-- [ ] Task: Define job schema and lifecycle states.
-  - [ ] Document queued/running/succeeded/failed/retrying states.
-  - [ ] Add test fixtures for state transitions.
-- [ ] Task: Implement queue primitives.
-  - [ ] Add enqueue/dequeue/status interfaces.
-  - [ ] Add tests for ordering and idempotency constraints.
+- [x] Task: Define job schema and lifecycle states.
+  - [x] Document queued/running/succeeded/failed/retrying states.
+  - [x] Add test fixtures for state transitions.
+- [x] Task: Implement queue primitives.
+  - [x] Add enqueue/dequeue/status interfaces.
+  - [x] Add tests for ordering and idempotency constraints.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Queue Model and API Contract' (Protocol in workflow.md)
 
 ## Phase 2: Retry Behavior and Integration
