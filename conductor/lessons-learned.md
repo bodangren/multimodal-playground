@@ -39,3 +39,11 @@
 
 - (2026-03-30, multimodal_playground_mvp_20260330) Split baseline text/structured work from experimental media work so provider gaps do not block the entire MVP.
 - (2026-04-12, single_api_key_env_20260407) Before implementing multi-key support, verify which providers/keys are actually used in production vs dead code.
+
+## Architecture & Design
+
+- (2026-04-16, job_queue_retry_20260407) Job queue retry semantics: maxAttempts=N means N total attempts (1 initial + N-1 retries). The retry() check is `(retryCount ?? 0) >= maxAttempts - 1` before incrementing.
+
+## Recurring Gotchas
+
+- (2026-04-16, job_queue_retry_20260407) When implementing queue state machines, ensure retry() sets state to Queued (not Retrying) so dequeue() can pick it up. Retrying state is only for tracking, not for job scheduling.
