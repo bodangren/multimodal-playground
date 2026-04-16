@@ -47,3 +47,4 @@
 ## Recurring Gotchas
 
 - (2026-04-16, job_queue_retry_20260407) When implementing queue state machines, ensure retry() sets state to Queued (not Retrying) so dequeue() can pick it up. Retrying state is only for tracking, not for job scheduling.
+- (2026-04-17, job_queue_retry_20260407) Zod v4 `z.record()` requires both key and value schemas: `z.record(z.string(), z.unknown())` instead of `z.record(z.unknown())`.

@@ -12,11 +12,11 @@
 
 ## Phase 2: Retry Behavior and Integration
 
-- [ ] Task: Implement bounded retry with backoff.
-  - [ ] Add classification for retryable vs terminal errors.
-  - [ ] Add tests for max-attempt behavior.
-- [ ] Task: Integrate queue into generation routes.
-  - [ ] Ensure status retrieval path is available.
-  - [ ] Validate behavior under transient failure simulation.
+- [x] Task: Implement bounded retry with backoff.
+  - [x] Add classification for retryable vs terminal errors.
+  - [x] Add tests for max-attempt behavior.
+- [x] Task: Integrate queue into generation routes.
+  - [x] Ensure status retrieval path is available.
+  - [x] Validate behavior under transient failure simulation.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Retry Behavior and Integration' (Protocol in workflow.md)
 

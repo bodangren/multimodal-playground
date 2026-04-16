@@ -153,4 +153,81 @@ describe('JobQueue', () => {
       expect(queue.getJob('job-1')?.state).toBe(JobState.Queued);
     });
   });
+
+  describe('transient failure simulation', () => {
+    it('should succeed after multiple transient failures', () => {
+      const job = queue.enqueue('job-1', { prompt: 'test' }, { maxAttempts: 3 });
+      expect(job?.retryCount).toBe(0);
+
+      queue.dequeue();
+      expect(queue.getJob('job-1')?.state).toBe(JobState.Running);
+
+      queue.fail('job-1', 'Network timeout');
+      expect(queue.getJob('job-1')?.state).toBe(JobState.Failed);
+      expect(queue.getJob('job-1')?.error).toBe('Network timeout');
+
+      const retried = queue.retry('job-1');
+      expect(retried).toBeDefined();
+      expect(retried?.state).toBe(JobState.Queued);
+      expect(retried?.retryCount).toBe(1);
+
+      queue.dequeue();
+      queue.fail('job-1', 'Server error 503');
+
+      const retried2 = queue.retry('job-1');
+      expect(retried2?.retryCount).toBe(2);
+
+      queue.dequeue();
+      const result = queue.complete('job-1', { output: 'success' });
+      expect(result?.state).toBe(JobState.Succeeded);
+      expect(result?.result).toEqual({ output: 'success' });
+    });
+
+    it('should exhaust retries and fail when all attempts transient-fail', () => {
+      queue.enqueue('job-1', { prompt: 'test' }, { maxAttempts: 2 });
+
+      queue.dequeue();
+      queue.fail('job-1', 'Transient 500');
+
+      const retried = queue.retry('job-1');
+      expect(retried?.retryCount).toBe(1);
+      expect(retried?.state).toBe(JobState.Queued);
+
+      queue.dequeue();
+      queue.fail('job-1', 'Transient 503');
+
+      const exhausted = queue.retry('job-1');
+      expect(exhausted).toBeUndefined();
+
+      const finalJob = queue.getJob('job-1');
+      expect(finalJob?.state).toBe(JobState.Failed);
+      expect(finalJob?.retryCount).toBe(1);
+    });
+
+    it('should track lastRetryAt timestamp on retry', () => {
+      queue.enqueue('job-1', { prompt: 'test' });
+      queue.dequeue();
+      queue.fail('job-1', 'Error');
+
+      const beforeRetry = Date.now();
+      queue.retry('job-1');
+      const afterRetry = Date.now();
+
+      const job = queue.getJob('job-1');
+      expect(job?.lastRetryAt).toBeGreaterThanOrEqual(beforeRetry);
+      expect(job?.lastRetryAt).toBeLessThanOrEqual(afterRetry);
+    });
+
+    it('should dequeue retried job as next in queue', () => {
+      queue.enqueue('job-1', { prompt: 'first' });
+      queue.enqueue('job-2', { prompt: 'second' });
+
+      queue.dequeue();
+      queue.fail('job-1', 'Error');
+      queue.retry('job-1');
+
+      const next = queue.dequeue();
+      expect(next?.id).toBe('job-1');
+    });
+  });
 });
