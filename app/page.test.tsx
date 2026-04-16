@@ -9,9 +9,109 @@ describe('Page', () => {
   });
 
   it('renders all modality sections with discovered OpenRouter models', async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValueOnce(
+    const fetchMock = vi.fn().mockImplementation((url: string) => {
+      if (url.includes('output_modalities=video')) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              data: [
+                {
+                  id: 'openai/sora-2-pro',
+                  name: 'Sora 2 Pro',
+                  architecture: {
+                    input_modalities: ['text'],
+                    output_modalities: ['video'],
+                  },
+                },
+              ],
+            }),
+            {
+              status: 200,
+              headers: { 'content-type': 'application/json' },
+            }
+          )
+        );
+      }
+
+      if (url.includes('output_modalities=audio')) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              data: [
+                {
+                  id: 'openai/gpt-4o-audio-preview',
+                  name: 'GPT-4o Audio Preview',
+                  architecture: {
+                    input_modalities: ['text'],
+                    output_modalities: ['audio'],
+                  },
+                },
+              ],
+            }),
+            {
+              status: 200,
+              headers: { 'content-type': 'application/json' },
+            }
+          )
+        );
+      }
+
+      if (url.includes('input_modalities=audio')) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              data: [
+                {
+                  id: 'openai/gpt-4o-audio-preview',
+                  name: 'GPT-4o Audio Preview',
+                  architecture: {
+                    input_modalities: ['audio'],
+                    output_modalities: ['text'],
+                  },
+                },
+              ],
+            }),
+            {
+              status: 200,
+              headers: { 'content-type': 'application/json' },
+            }
+          )
+        );
+      }
+
+      if (url.includes('output_modalities=image')) {
+        return Promise.resolve(
+          new Response(
+            JSON.stringify({
+              data: [
+                {
+                  id: 'black-forest-labs/flux.2-pro',
+                  name: 'FLUX.2 Pro',
+                  architecture: {
+                    input_modalities: ['text', 'image'],
+                    output_modalities: ['image'],
+                  },
+                },
+                {
+                  id: 'sourceful/riverflow-v2-pro',
+                  name: 'Riverflow V2 Pro',
+                  architecture: {
+                    input_modalities: ['text', 'image'],
+                    output_modalities: ['image'],
+                  },
+                },
+              ],
+            }),
+            {
+              status: 200,
+              headers: { 'content-type': 'application/json' },
+            }
+          )
+        );
+      }
+
+      // Default: /models (text models)
+      return Promise.resolve(
         new Response(
           JSON.stringify({
             data: [
@@ -34,91 +134,13 @@ describe('Page', () => {
           }),
           {
             status: 200,
-            headers: {
-              'content-type': 'application/json',
-            },
-          }
-        )
-      )
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({
-            data: [
-              {
-                id: 'black-forest-labs/flux.2-pro',
-                name: 'FLUX.2 Pro',
-                architecture: {
-                  input_modalities: ['text', 'image'],
-                  output_modalities: ['image'],
-                },
-              },
-              {
-                id: 'sourceful/riverflow-v2-pro',
-                name: 'Riverflow V2 Pro',
-                architecture: {
-                  input_modalities: ['text', 'image'],
-                  output_modalities: ['image'],
-                },
-              },
-            ],
-          }),
-          {
-            status: 200,
-            headers: {
-              'content-type': 'application/json',
-            },
-          }
-        )
-      )
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({
-            data: [
-              {
-                id: 'openai/gpt-4o-audio-preview',
-                name: 'GPT-4o Audio Preview',
-                architecture: {
-                  input_modalities: ['audio'],
-                  output_modalities: ['text'],
-                },
-              },
-            ],
-          }),
-          {
-            status: 200,
-            headers: {
-              'content-type': 'application/json',
-            },
-          }
-        )
-      )
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({
-            data: [
-              {
-                id: 'openai/sora-2-pro',
-                name: 'Sora 2 Pro',
-                architecture: {
-                  input_modalities: ['text'],
-                  output_modalities: ['video'],
-                },
-              },
-            ],
-          }),
-          {
-            status: 200,
-            headers: {
-              'content-type': 'application/json',
-            },
+            headers: { 'content-type': 'application/json' },
           }
         )
       );
+    });
 
-    vi.stubGlobal(
-      'fetch',
-      fetchMock
-    );
+    vi.stubGlobal('fetch', fetchMock);
 
     const html = renderToStaticMarkup(await Page());
 
