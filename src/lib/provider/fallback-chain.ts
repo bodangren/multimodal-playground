@@ -60,8 +60,19 @@ export class FallbackChain<P, R> {
     let attempts = 0;
     let lastError: unknown;
     let currentProviderIndex = 0;
+    const totalProviders = this.providers.length;
+    const triedInCycle = new Set<string>();
 
     while (attempts < this.maxAttempts) {
+      if (triedInCycle.size >= totalProviders) {
+        const skippedProviders = Array.from(triedInCycle).join(', ');
+        this.logger.error('All providers have open circuits - aborting', {
+          providers: skippedProviders,
+          attempts,
+        });
+        throw lastError ?? new Error('All providers have open circuits');
+      }
+
       const provider = this.providers[currentProviderIndex];
       if (!provider) {
         currentProviderIndex = 0;
@@ -70,10 +81,13 @@ export class FallbackChain<P, R> {
 
       if (provider.isCircuitOpen?.() === true) {
         this.logger.info('Skipping provider with open circuit', { providerId: provider.id });
-        currentProviderIndex++;
+        triedInCycle.add(provider.id);
+        currentProviderIndex = (currentProviderIndex + 1) % totalProviders;
+        attempts++;
         continue;
       }
 
+      triedInCycle.add(provider.id);
       const startTime = Date.now();
       attempts++;
       this.incrementTotalAttempts(provider.id);

@@ -116,6 +116,22 @@ describe('FallbackChain', () => {
       expect(isCircuitOpenB).toHaveBeenCalled();
     });
 
+    it('should throw when all providers have open circuits', async () => {
+      const logger = createMockLogger();
+      const isCircuitOpenA = vi.fn().mockReturnValue(true);
+      const isCircuitOpenB = vi.fn().mockReturnValue(true);
+
+      const providers: ProviderFallbackConfig<unknown, string>[] = [
+        { id: 'a', execute: createFailingProvider('a', 'fail'), isCircuitOpen: isCircuitOpenA },
+        { id: 'b', execute: createFailingProvider('b', 'fail'), isCircuitOpen: isCircuitOpenB },
+      ];
+      const chain = new FallbackChain(providers, { logger, maxAttempts: 3, baseDelayMs: 10, maxDelayMs: 100 });
+
+      await expect(chain.execute({ prompt: 'test' })).rejects.toThrow('All providers have open circuits');
+      expect(isCircuitOpenA).toHaveBeenCalled();
+      expect(isCircuitOpenB).toHaveBeenCalled();
+    });
+
     it('should record failure when executing against a provider', async () => {
       const logger = createMockLogger();
       const failingProvider = createFailingProvider('a', 'fail');
