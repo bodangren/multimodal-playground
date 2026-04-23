@@ -9,6 +9,7 @@
 - (2026-03-30, multimodal_playground_mvp_20260330) Treat text and structured output as the stable baseline; plan media modalities behind capability checks because the SDK surfaces are experimental.
 - (2026-04-12, single_api_key_env_20260407) OpenAI provider (getOpenAIProvider) and its API key are not used in production code - all actual API calls go through OpenRouter. This is dead code that could be cleaned up in a future chore.
 - (2026-04-16, job_queue_retry_20260407) Job queue retry semantics: maxAttempts=N means N total attempts (1 initial + N-1 retries). The retry() check is `(retryCount ?? 0) >= maxAttempts - 1` before incrementing.
+- (2026-04-23, provider_failover_20260423) AI SDK model objects are stateful and tied to provider instances; integrating FallbackChain requires architectural changes at the route/helper level, not just config. Consider direct HTTP wrapper functions for true provider failover.
 
 ## Recurring Gotchas
 

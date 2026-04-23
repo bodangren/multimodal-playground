@@ -43,10 +43,10 @@
 
 ## Phase 4: Configuration and Integration Testing
 
-- [ ] Task: Add provider priority configuration.
-  - [ ] Create `providers.json` schema with Zod validation.
-  - [ ] Support environment variable overrides.
-  - [ ] Write tests for config loading and validation.
+- [x] Task: Add provider priority configuration.
+  - [x] Create `providers.json` schema with Zod validation.
+  - [x] Support environment variable overrides.
+  - [x] Write tests for config loading and validation.
 - [ ] Task: Integrate failover into generation routes.
   - [ ] Replace direct provider calls with failover-aware wrapper.
   - [ ] Ensure existing synchronous paths remain functional.
