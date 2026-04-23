@@ -12,21 +12,25 @@ describe('JobQueue', () => {
   describe('enqueue', () => {
     it('should add job to queue with queued state', () => {
       const job = queue.enqueue('job-1', { prompt: 'test prompt' });
-      expect(job.id).toBe('job-1');
-      expect(job.state).toBe(JobState.Queued);
-      expect(job.payload.prompt).toBe('test prompt');
+      expect(job).toBeDefined();
+      expect(job!.id).toBe('job-1');
+      expect(job!.state).toBe(JobState.Queued);
+      expect(job!.payload.prompt).toBe('test prompt');
       expect(queue.size()).toBe(1);
     });
 
     it('should assign unique ids if not provided', () => {
       const job1 = queue.enqueue(undefined as unknown as string, { prompt: 'test1' });
       const job2 = queue.enqueue(undefined as unknown as string, { prompt: 'test2' });
-      expect(job1.id).not.toBe(job2.id);
+      expect(job1).toBeDefined();
+      expect(job2).toBeDefined();
+      expect(job1!.id).not.toBe(job2!.id);
     });
 
     it('should allow custom max attempts', () => {
       const job = queue.enqueue('job-1', { prompt: 'test' }, { maxAttempts: 5 });
-      expect(job.maxAttempts).toBe(5);
+      expect(job).toBeDefined();
+      expect(job!.maxAttempts).toBe(5);
     });
   });
 
