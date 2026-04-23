@@ -14,14 +14,14 @@
 
 ## Phase 2: Circuit Breaker
 
-- [ ] Task: Define circuit breaker states and transitions.
-  - [ ] Create `CircuitBreaker` class with closed/open/half-open FSM.
-  - [ ] Configure failure threshold, cooldown, and probe count.
-  - [ ] Write tests for all state transitions (closed→open, open→half-open, half-open→closed, half-open→open).
-- [ ] Task: Implement per-provider circuit breaker instances.
-  - [ ] Integrate circuit breaker with health module.
-  - [ ] Persist state to disk for restart survival.
-  - [ ] Write tests for state persistence and cold-start defaults.
+- [x] Task: Define circuit breaker states and transitions.
+  - [x] Create `CircuitBreaker` class with closed/open/half-open FSM.
+  - [x] Configure failure threshold, cooldown, and probe count.
+  - [x] Write tests for all state transitions (closed→open, open→half-open, half-open→closed, half-open→open).
+- [x] Task: Implement per-provider circuit breaker instances.
+  - [x] Integrate circuit breaker with health module.
+  - [x] Persist state to disk for restart survival.
+  - [x] Write tests for state persistence and cold-start defaults.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Circuit Breaker' (Protocol in workflow.md)
 
 ## Phase 3: Fallback Routing and Retry
