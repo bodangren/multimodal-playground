@@ -48,8 +48,10 @@ const DEFAULT_HEALTH_WINDOW_OPTIONS: HealthWindowOptions = {
 export class HealthWindow {
   private outcomes: HealthOutcome[] = [];
   private options: HealthWindowOptions;
+  private readonly windowId: string;
 
-  constructor(options: Partial<HealthWindowOptions> = {}) {
+  constructor(windowId: string, options: Partial<HealthWindowOptions> = {}) {
+    this.windowId = windowId;
     this.options = { ...DEFAULT_HEALTH_WINDOW_OPTIONS, ...options };
   }
 
@@ -115,7 +117,7 @@ export class HealthWindow {
   getHealth(): ProviderHealth {
     this.prune();
     return {
-      providerId: 'provider',
+      providerId: this.windowId,
       status: this.getStatus(),
       successRate: this.getSuccessRate(),
       totalRequests: this.outcomes.length,
@@ -148,7 +150,7 @@ export class ProviderHealthTracker {
   getOrCreateTracker(providerId: string): HealthWindow {
     let tracker = this.trackers.get(providerId);
     if (!tracker) {
-      tracker = new HealthWindow(this.options);
+      tracker = new HealthWindow(providerId, this.options);
       this.trackers.set(providerId, tracker);
     }
     return tracker;

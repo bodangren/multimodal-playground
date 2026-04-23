@@ -10,7 +10,7 @@
   - [x] Record success/failure/latency per call.
   - [x] Compute rolling health status from the window.
   - [x] Write tests for window expiry and threshold transitions.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Provider Health Module' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Provider Health Module' (Protocol in workflow.md) — CHECKPOINT: 8ef6a98
 
 ## Phase 2: Circuit Breaker
 
@@ -22,23 +22,23 @@
   - [x] Integrate circuit breaker with health module.
   - [x] Persist state to disk for restart survival.
   - [x] Write tests for state persistence and cold-start defaults.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Circuit Breaker' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Circuit Breaker' (Protocol in workflow.md) — CHECKPOINT: 8ef6a98
 
 ## Phase 3: Fallback Routing and Retry
 
-- [ ] Task: Define provider error classification.
-  - [ ] Map HTTP status codes to retryable/terminal/rate-limited taxonomy.
-  - [ ] Add provider-specific error body parsing.
-  - [ ] Write tests for classification of known error patterns.
-- [ ] Task: Implement fallback chain with retry and backoff.
-  - [ ] Build ordered provider chain from config.
-  - [ ] Add exponential backoff between retries.
-  - [ ] Cap total attempts across all providers.
-  - [ ] Write tests for chain exhaustion and backoff timing.
-- [ ] Task: Integrate circuit breaker into fallback routing.
-  - [ ] Skip providers with open circuit breakers.
-  - [ ] Log failover events with structured JSON.
-  - [ ] Write tests for circuit breaker integration with fallback.
+- [x] Task: Define provider error classification.
+  - [x] Map HTTP status codes to retryable/terminal/rate-limited taxonomy.
+  - [x] Add provider-specific error body parsing.
+  - [x] Write tests for classification of known error patterns.
+- [x] Task: Implement fallback chain with retry and backoff.
+  - [x] Build ordered provider chain from config.
+  - [x] Add exponential backoff between retries.
+  - [x] Cap total attempts across all providers.
+  - [x] Write tests for chain exhaustion and backoff timing.
+- [x] Task: Integrate circuit breaker into fallback routing.
+  - [x] Skip providers with open circuit breakers.
+  - [x] Log failover events with structured JSON.
+  - [x] Write tests for circuit breaker integration with fallback.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Fallback Routing and Retry' (Protocol in workflow.md)
 
 ## Phase 4: Configuration and Integration Testing

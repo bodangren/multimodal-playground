@@ -9,7 +9,7 @@ describe('HealthWindow', () => {
   let healthWindow: HealthWindow;
 
   beforeEach(() => {
-    healthWindow = new HealthWindow({
+    healthWindow = new HealthWindow('test-tracker', {
       windowSizeMs: 60000,
       minSamples: 5,
       degradedThreshold: 0.9,
@@ -120,7 +120,7 @@ describe('HealthWindow', () => {
 
   describe('sliding window', () => {
     it('should prune outcomes outside window', async () => {
-      const shortWindow = new HealthWindow({
+      const shortWindow = new HealthWindow('short-window', {
         windowSizeMs: 100,
         minSamples: 1,
         degradedThreshold: 0.9,
@@ -146,7 +146,7 @@ describe('HealthWindow', () => {
       healthWindow.record(false, 50, 500);
 
       const health = healthWindow.getHealth();
-      expect(health.providerId).toBe('provider');
+      expect(health.providerId).toBe('test-tracker');
       expect(health.totalRequests).toBe(3);
       expect(health.successfulRequests).toBe(2);
       expect(health.failedRequests).toBe(1);
