@@ -21,6 +21,7 @@
 - (2026-04-17, job_queue_retry_20260407) Zod v4 `z.record()` requires both key and value schemas: `z.record(z.string(), z.unknown())`.
 - (2026-04-23, provider_failover_20260423) Fire-and-forget async saves need a `waitForPendingSave()` method for proper test synchronization.
 - (2026-04-23, provider_failover_20260423) `vi.useFakeTimers()` breaks async file I/O; use in-memory persistence for persistence tests with fake timers.
+- (2026-04-23, provider_failover_20260423) Error classification: 429 is classified as RateLimited (not Retryable). `isRetryable()` checks if retry-after delay is known. Retryable errors (500/502/503/504) can retry immediately with backoff.
 
 ## Patterns That Worked Well
 
