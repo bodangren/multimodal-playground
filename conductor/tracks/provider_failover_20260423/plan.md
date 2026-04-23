@@ -47,11 +47,11 @@
    - [x] Create `providers.json` schema with Zod validation.
    - [x] Support environment variable overrides.
    - [x] Write tests for config loading and validation.
-- [x] Task: Integrate failover into generation routes.
-   - [x] Replace direct provider calls with failover-aware wrapper.
-   - [x] Ensure existing synchronous paths remain functional.
-   - [x] Write integration tests simulating multi-provider failures.
+- [~] Task: Integrate failover into generation routes.
+   - [~] Replace direct provider calls with failover-aware wrapper.
+   - [~] Ensure existing synchronous paths remain functional.
+   - [ ] Write integration tests simulating multi-provider failures.
 - [x] Task: Add metrics and observability.
    - [x] Track failover count, per-provider error rate, circuit breaker state changes.
    - [x] Write tests for metric recording.
-- [x] Task: Conductor - User Manual Verification 'Phase 4: Configuration and Integration Testing' (Protocol in workflow.md) — CHECKPOINT: dffe06f
+- [ ] Task: Conductor - User Manual Verification 'Phase 4: Configuration and Integration Testing' (Protocol in workflow.md)
