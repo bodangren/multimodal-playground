@@ -27,6 +27,8 @@
 - (2026-04-24, provider_failover_20260423) FallbackChain.execute() infinite loop: when skipping providers with open circuits, the `attempts` counter was never incremented. Fixed by adding a `triedInCycle` Set and checking if all providers have been tried.
 - (2026-04-24, advanced_provider_routing_20260424) Adding `modelId` as required field to `ProviderFallbackConfig` breaks existing tests; must add `modelId` to all test provider configs. Consider making it optional with a default empty string to reduce churn.
 - (2026-04-24, advanced_provider_routing_20260424) Cost-based routing: cost lookups use `providerId:modelId` as the key; ensure test cost configs have keys matching the provider IDs used in tests.
+- (2026-04-25, advanced_provider_routing_20260424) When changing return type of a private helper method (e.g., `estimateProviderCost` from `number | undefined` to `{ cost: number; costInfo: CostInfo } | undefined`), update all call sites that reference the old structure (estimatedCost.cost vs estimatedCost alone).
+- (2026-04-25, advanced_provider_routing_20260424) Cost savings calculation: compute maxCost per request BEFORE executing provider, then compare actual cost to maxCost after success. The `recordCostSavings` method calculates `maxCost - actualCost` only when `actualCost < maxCost`.
 
 ## Patterns That Worked Well
 

@@ -24,21 +24,21 @@
 
 ## Phase 3: Cost Tracking and Reporting
 
-- [ ] Task: Add cost accumulation to provider metrics.
-  - [ ] Track input/output token counts per call.
-  - [ ] Calculate cost per provider from configured pricing.
-  - [ ] Add tests for cost accumulation in metrics.
-- [ ] Task: Add cost savings reporting.
-  - [ ] Compare actual routing cost vs single-provider baseline.
-  - [ ] Report total savings in getFailoverMetrics output.
-  - [ ] Add tests for cost savings calculation.
+- [x] Task: Add cost accumulation to provider metrics.
+  - [x] Track input/output token counts per call.
+  - [x] Calculate cost per provider from configured pricing.
+  - [x] Add tests for cost accumulation in metrics.
+- [x] Task: Add cost savings reporting.
+  - [x] Compare actual routing cost vs single-provider baseline.
+  - [x] Report total savings in getFailoverMetrics output.
+  - [x] Add tests for cost savings calculation.
 
 ## Phase 4: Integration and Verification
 
-- [ ] Task: Integrate cost routing into ProviderExecutor.
-  - [ ] Ensure all existing provider health features still work.
-  - [ ] Add integration tests for cost-aware execution.
-- [ ] Task: Verify backwards compatibility.
-  - [ ] Ensure cost features disabled when not configured.
-  - [ ] Run full test suite.
-  - [ ] Update tracks registry.
+- [x] Task: Integrate cost routing into ProviderExecutor.
+  - [x] Ensure all existing provider health features still work.
+  - [x] Add integration tests for cost-aware execution.
+- [x] Task: Verify backwards compatibility.
+  - [x] Ensure cost features disabled when not configured.
+  - [x] Run full test suite.
+  - [x] Update tracks registry.

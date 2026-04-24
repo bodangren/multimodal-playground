@@ -21,5 +21,6 @@ This file tracks all major tracks for the project.
   *Link: [./tracks/prompt_output_eval_harness_20260407/](./tracks/prompt_output_eval_harness_20260407/)*
 - [ ] **Track: Provider Failover and Fallback Routing**
    *Link: [./tracks/provider_failover_20260423/](./tracks/provider_failover_20260423/)*
-- [ ] **Track: Advanced Provider Routing with Cost Optimization**
-   *Link: [./tracks/advanced_provider_routing_20260424/](./tracks/advanced_provider_routing_20260424/)*
+- [x] **Track: Advanced Provider Routing with Cost Optimization**
+    *Link: [./tracks/advanced_provider_routing_20260424/](./tracks/advanced_provider_routing_20260424/)*
+    *Status: Complete*

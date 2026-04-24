@@ -413,4 +413,187 @@ describe('FallbackChain', () => {
       );
     });
   });
+
+  describe('cost accumulation in metrics', () => {
+    const costConfig = {
+      enabled: true,
+      models: {
+        'provider-a:model-a': {
+          providerId: 'provider-a',
+          modelId: 'model-a',
+          modality: 'text' as const,
+          inputCostPerMillion: 3,
+          outputCostPerMillion: 15,
+        },
+        'provider-b:model-b': {
+          providerId: 'provider-b',
+          modelId: 'model-b',
+          modality: 'text' as const,
+          inputCostPerMillion: 1,
+          outputCostPerMillion: 5,
+        },
+      },
+    };
+
+    it('should track input/output tokens and cost for successful requests', async () => {
+      const logger = createMockLogger();
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'provider-a',
+          modelId: 'model-a',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      await chain.execute({ prompt: 'test' });
+
+      const metrics = chain.getMetrics('provider-a');
+      expect(metrics?.totalCost).toBeCloseTo((1000 / 1_000_000) * 3 + (500 / 1_000_000) * 15);
+      expect(metrics?.inputTokens).toBe(1000);
+      expect(metrics?.outputTokens).toBe(500);
+    });
+
+    it('should accumulate cost across multiple requests', async () => {
+      const logger = createMockLogger();
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'provider-a',
+          modelId: 'model-a',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      await chain.execute({ prompt: 'test' });
+      await chain.execute({ prompt: 'test2' });
+
+      const metrics = chain.getMetrics('provider-a');
+      expect(metrics?.inputTokens).toBe(2000);
+      expect(metrics?.outputTokens).toBe(1000);
+    });
+
+    it('should not track cost when cost config is disabled', async () => {
+      const logger = createMockLogger();
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'provider-a',
+          modelId: 'model-a',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig: { enabled: false, models: {} },
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      await chain.execute({ prompt: 'test' });
+
+      const metrics = chain.getMetrics('provider-a');
+      expect(metrics?.totalCost).toBe(0);
+      expect(metrics?.inputTokens).toBe(0);
+      expect(metrics?.outputTokens).toBe(0);
+    });
+
+    it('should track cost for fallback providers', async () => {
+      const logger = createMockLogger();
+      const failingProvider = vi.fn().mockImplementation(async () => {
+        throw new Error('fail');
+      });
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'provider-a',
+          modelId: 'model-a',
+          execute: failingProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 2000, estimatedOutputTokens: 1000 }),
+        },
+        {
+          id: 'provider-b',
+          modelId: 'model-b',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1500, estimatedOutputTokens: 750 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      await chain.execute({ prompt: 'test' });
+
+      const metricsA = chain.getMetrics('provider-a');
+      expect(metricsA?.totalAttempts).toBe(1);
+      expect(metricsA?.failedAttempts).toBe(1);
+
+      const metricsB = chain.getMetrics('provider-b');
+      expect(metricsB?.totalAttempts).toBe(1);
+      expect(metricsB?.successfulAttempts).toBe(1);
+      expect(metricsB?.inputTokens).toBe(1500);
+      expect(metricsB?.outputTokens).toBe(750);
+    });
+
+    it('should calculate cost savings when provider is cheaper than max', async () => {
+      const logger = createMockLogger();
+      const expensiveProvider = vi.fn().mockImplementation(async () => {
+        throw new Error('expensive failed');
+      });
+      const cheapProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'provider-a',
+          modelId: 'model-a',
+          execute: expensiveProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+        {
+          id: 'provider-b',
+          modelId: 'model-b',
+          execute: cheapProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      await chain.execute({ prompt: 'test' });
+
+      const metrics = chain.getMetrics('provider-b');
+      expect(metrics?.costSavings).toBeGreaterThan(0);
+    });
+  });
 });

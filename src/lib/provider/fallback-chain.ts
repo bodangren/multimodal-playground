@@ -43,6 +43,10 @@ export interface FallbackMetrics {
   successfulAttempts: number;
   failedAttempts: number;
   failoverCount: number;
+  totalCost: number;
+  inputTokens: number;
+  outputTokens: number;
+  costSavings: number;
 }
 
 export class FallbackChain<P, R> {
@@ -73,7 +77,7 @@ export class FallbackChain<P, R> {
     this.errorClassifier = new ProviderErrorClassifier();
     this.metrics = new Map();
     for (const provider of providers) {
-      this.metrics.set(provider.id, { totalAttempts: 0, successfulAttempts: 0, failedAttempts: 0, failoverCount: 0 });
+      this.metrics.set(provider.id, { totalAttempts: 0, successfulAttempts: 0, failedAttempts: 0, failoverCount: 0, totalCost: 0, inputTokens: 0, outputTokens: 0, costSavings: 0 });
     }
   }
 
@@ -112,7 +116,7 @@ export class FallbackChain<P, R> {
       }
 
       const estimatedCost = this.estimateProviderCost(provider, payload, effectiveCostConfig);
-      if (estimatedCost !== undefined && remainingBudget !== undefined && estimatedCost > remainingBudget) {
+      if (estimatedCost && remainingBudget !== undefined && estimatedCost.cost > remainingBudget) {
         this.logger.info('Skipping provider exceeding cost limit', {
           providerId: provider.id,
           estimatedCost,
@@ -130,11 +134,16 @@ export class FallbackChain<P, R> {
       this.incrementTotalAttempts(provider.id);
 
       try {
+        const maxCost = this.getMaxCostForRequest(payload, effectiveCostConfig);
         const result = await provider.execute(payload);
         const latencyMs = Date.now() - startTime;
         this.healthTracker.record(provider.id, true, latencyMs);
         provider.recordSuccess?.();
         this.incrementSuccessfulAttempts(provider.id);
+        if (estimatedCost) {
+          this.recordCost(provider.id, estimatedCost.cost, estimatedCost.costInfo);
+          this.recordCostSavings(provider.id, estimatedCost.cost, maxCost);
+        }
         return result;
       } catch (error) {
         const latencyMs = Date.now() - startTime;
@@ -144,8 +153,8 @@ export class FallbackChain<P, R> {
         provider.recordFailure?.(providerError);
         this.incrementFailedAttempts(provider.id);
 
-        if (estimatedCost !== undefined && remainingBudget !== undefined) {
-          remainingBudget -= estimatedCost;
+        if (estimatedCost && remainingBudget !== undefined) {
+          remainingBudget -= estimatedCost.cost;
         }
 
         const classification = this.errorClassifier.classify(providerError);
@@ -231,7 +240,7 @@ export class FallbackChain<P, R> {
     provider: ProviderFallbackConfig<P, R>,
     payload: P,
     costConfig?: CostConfig
-  ): number | undefined {
+  ): { cost: number; costInfo: CostInfo } | undefined {
     if (!costConfig || !costConfig.enabled) {
       return undefined;
     }
@@ -243,12 +252,55 @@ export class FallbackChain<P, R> {
     if (!costInfo) {
       return undefined;
     }
-    return calculateRequestCost(
+    const cost = calculateRequestCost(
       costConfig,
       provider.id,
       provider.modelId,
       costInfo.estimatedInputTokens,
       costInfo.estimatedOutputTokens
     );
+    return { cost, costInfo };
+  }
+
+  private recordCost(providerId: string, cost: number, costInfo: CostInfo): void {
+    const m = this.metrics.get(providerId);
+    if (m) {
+      m.totalCost += cost;
+      m.inputTokens += costInfo.estimatedInputTokens;
+      m.outputTokens += costInfo.estimatedOutputTokens;
+    }
+  }
+
+  private getMaxCostForRequest(payload: P, effectiveCostConfig: CostConfig | undefined): number {
+    if (!effectiveCostConfig || !effectiveCostConfig.enabled) {
+      return 0;
+    }
+    let maxCost = 0;
+    for (const provider of this.providers) {
+      const costModel = getCostForModel(effectiveCostConfig, provider.id, provider.modelId);
+      if (!costModel) continue;
+      const costInfo = provider.getCostInfo?.(payload);
+      if (!costInfo) continue;
+      const cost = calculateRequestCost(
+        effectiveCostConfig,
+        provider.id,
+        provider.modelId,
+        costInfo.estimatedInputTokens,
+        costInfo.estimatedOutputTokens
+      );
+      if (cost > maxCost) {
+        maxCost = cost;
+      }
+    }
+    return maxCost;
+  }
+
+  private recordCostSavings(providerId: string, actualCost: number, maxCost: number): void {
+    if (maxCost > 0 && actualCost < maxCost) {
+      const m = this.metrics.get(providerId);
+      if (m) {
+        m.costSavings += maxCost - actualCost;
+      }
+    }
   }
 }
