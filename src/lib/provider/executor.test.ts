@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { FallbackChain, type ProviderFallbackConfig } from './fallback-chain';
 
 describe('FallbackChain with circuit breaker integration', () => {

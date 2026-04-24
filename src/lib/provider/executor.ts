@@ -1,4 +1,4 @@
-import { Modality, type ProviderConfig } from './config';
+import { loadProviderConfigFromEnv, type Modality, type ProviderConfig } from './config';
 import { FallbackChain, type ChainOptions, type FallbackMetrics } from './fallback-chain';
 import { ProviderCircuitBreakerManager, FileCircuitBreakerPersistence } from './circuit-breaker-manager';
 import { type ProviderError } from './error-classifier';
@@ -116,7 +116,7 @@ export class ProviderExecutor {
       await this.cbManager.recordProviderSuccess(providerId);
     };
 
-    const recordFailure = async (error: ProviderError) => {
+    const recordFailure = async (_error: ProviderError) => {
       await this.cbManager.recordProviderFailure(providerId);
     };
 
@@ -181,7 +181,6 @@ let globalExecutor: ProviderExecutor | null = null;
 
 export function getProviderExecutor(): ProviderExecutor {
   if (!globalExecutor) {
-    const { loadProviderConfigFromEnv } = require('./config');
     const config = loadProviderConfigFromEnv();
     globalExecutor = new ProviderExecutor(config);
   }
