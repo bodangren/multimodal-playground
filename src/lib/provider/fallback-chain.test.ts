@@ -293,7 +293,7 @@ describe('FallbackChain', () => {
         maxDelayMs: 100,
       });
 
-      const result = await chain.execute({ prompt: 'test' }, { costConfig: cheapCostConfig, costLimit: 0.05 });
+      const result = await chain.execute({ prompt: 'test' }, { payload: { prompt: 'test' }, costConfig: cheapCostConfig, costLimit: 0.05 });
       expect(result).toBe('success');
       expect(successProvider).toHaveBeenCalledTimes(1);
     });
