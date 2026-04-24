@@ -22,5 +22,5 @@ This file tracks all major tracks for the project.
 - [ ] **Track: Provider Failover and Fallback Routing**
    *Link: [./tracks/provider_failover_20260423/](./tracks/provider_failover_20260423/)*
 - [x] **Track: Advanced Provider Routing with Cost Optimization**
-    *Link: [./tracks/advanced_provider_routing_20260424/](./tracks/advanced_provider_routing_20260424/)*
+    *Link: [./archive/advanced_provider_routing_20260424/](./archive/advanced_provider_routing_20260424/)*
     *Status: Complete*
