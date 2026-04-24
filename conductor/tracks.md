@@ -14,14 +14,12 @@ This file tracks all major tracks for the project.
   *Link: [./tracks/docs_and_dockerize_20260401/](./tracks/docs_and_dockerize_20260401/)*
 - [x] **Track: Single API key configuration via `.env`**
   *Link: [./archive/single_api_key_env_20260407/](./archive/single_api_key_env_20260407/)*
-- [ ] **Track: Generation Job Queue and Retry Semantics**
-  *Link: [./tracks/job_queue_retry_20260407/](./tracks/job_queue_retry_20260407/)*
+- [x] **Track: Generation Job Queue and Retry Semantics**
+   *Link: [./archive/job_queue_retry_20260407/](./archive/job_queue_retry_20260407/)*
+   *Status: Complete*
 - [ ] **Track: Prompt/Output Evaluation Harness**
   *Link: [./tracks/prompt_output_eval_harness_20260407/](./tracks/prompt_output_eval_harness_20260407/)*
 - [ ] **Track: Provider Failover and Fallback Routing**
    *Link: [./tracks/provider_failover_20260423/](./tracks/provider_failover_20260423/)*
-- [x] **Track: Provider Failover and Fallback Routing**
-   *Link: [./archive/provider_failover_20260423/](./archive/provider_failover_20260423/)*
-   *Status: Complete*
 - [ ] **Track: Advanced Provider Routing with Cost Optimization**
    *Link: [./tracks/advanced_provider_routing_20260424/](./tracks/advanced_provider_routing_20260424/)*
