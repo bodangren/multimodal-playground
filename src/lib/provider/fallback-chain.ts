@@ -1,24 +1,41 @@
 import { ProviderErrorClassifier, ErrorClassification, type ProviderError } from './error-classifier';
 import { ProviderHealthTracker } from './health';
+import { type CostConfig, calculateRequestCost, getCostForModel } from './cost-config';
+
+export interface CostInfo {
+  estimatedInputTokens: number;
+  estimatedOutputTokens: number;
+}
 
 export interface ProviderFallbackConfig<P, R> {
   id: string;
+  modelId: string;
   execute: (payload: P) => Promise<R>;
   weight?: number;
   isCircuitOpen?: () => boolean;
   recordSuccess?: () => void;
   recordFailure?: (error: ProviderError) => void;
+  getCostInfo?: (payload: P) => CostInfo | undefined;
 }
 
 export interface ChainOptions {
   maxAttempts?: number;
   baseDelayMs?: number;
   maxDelayMs?: number;
+  costConfig?: CostConfig;
+  costLimit?: number;
   logger?: {
     info: (message: string, meta?: Record<string, unknown>) => void;
     error: (message: string, meta?: Record<string, unknown>) => void;
     warn: (message: string, meta?: Record<string, unknown>) => void;
   };
+}
+
+export interface ExecutionContext<P> {
+  payload: P;
+  costConfig?: CostConfig;
+  costLimit?: number;
+  remainingBudget?: number;
 }
 
 export interface FallbackMetrics {
@@ -37,12 +54,16 @@ export class FallbackChain<P, R> {
   private healthTracker: ProviderHealthTracker;
   private errorClassifier: ProviderErrorClassifier;
   private metrics: Map<string, FallbackMetrics>;
+  private costConfig?: CostConfig;
+  private costLimit?: number;
 
   constructor(providers: ProviderFallbackConfig<P, R>[], options: ChainOptions = {}) {
     this.providers = providers;
     this.maxAttempts = options.maxAttempts ?? 3;
     this.baseDelayMs = options.baseDelayMs ?? 1000;
     this.maxDelayMs = options.maxDelayMs ?? 30000;
+    this.costConfig = options.costConfig;
+    this.costLimit = options.costLimit;
     this.logger = options.logger ?? {
       info: () => {},
       error: () => {},
@@ -56,12 +77,15 @@ export class FallbackChain<P, R> {
     }
   }
 
-  async execute(payload: P): Promise<R> {
+  async execute(payload: P, context?: ExecutionContext<P>): Promise<R> {
     let attempts = 0;
     let lastError: unknown;
     let currentProviderIndex = 0;
     const totalProviders = this.providers.length;
     const triedInCycle = new Set<string>();
+    const effectiveCostConfig = context?.costConfig ?? this.costConfig;
+    const effectiveCostLimit = context?.costLimit ?? this.costLimit;
+    let remainingBudget = context?.remainingBudget ?? effectiveCostLimit ?? undefined;
 
     while (attempts < this.maxAttempts) {
       if (triedInCycle.size >= totalProviders) {
@@ -87,6 +111,19 @@ export class FallbackChain<P, R> {
         continue;
       }
 
+      const estimatedCost = this.estimateProviderCost(provider, payload, effectiveCostConfig);
+      if (estimatedCost !== undefined && remainingBudget !== undefined && estimatedCost > remainingBudget) {
+        this.logger.info('Skipping provider exceeding cost limit', {
+          providerId: provider.id,
+          estimatedCost,
+          remainingBudget,
+        });
+        triedInCycle.add(provider.id);
+        currentProviderIndex = (currentProviderIndex + 1) % totalProviders;
+        attempts++;
+        continue;
+      }
+
       triedInCycle.add(provider.id);
       const startTime = Date.now();
       attempts++;
@@ -106,6 +143,10 @@ export class FallbackChain<P, R> {
         this.healthTracker.record(provider.id, false, latencyMs, providerError.status);
         provider.recordFailure?.(providerError);
         this.incrementFailedAttempts(provider.id);
+
+        if (estimatedCost !== undefined && remainingBudget !== undefined) {
+          remainingBudget -= estimatedCost;
+        }
 
         const classification = this.errorClassifier.classify(providerError);
 
@@ -184,5 +225,30 @@ export class FallbackChain<P, R> {
 
   private sleep(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  private estimateProviderCost(
+    provider: ProviderFallbackConfig<P, R>,
+    payload: P,
+    costConfig?: CostConfig
+  ): number | undefined {
+    if (!costConfig || !costConfig.enabled) {
+      return undefined;
+    }
+    const costModel = getCostForModel(costConfig, provider.id, provider.modelId);
+    if (!costModel) {
+      return undefined;
+    }
+    const costInfo = provider.getCostInfo?.(payload);
+    if (!costInfo) {
+      return undefined;
+    }
+    return calculateRequestCost(
+      costConfig,
+      provider.id,
+      provider.modelId,
+      costInfo.estimatedInputTokens,
+      costInfo.estimatedOutputTokens
+    );
   }
 }

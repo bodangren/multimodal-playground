@@ -1,6 +1,6 @@
 # Implementation Plan: Advanced Provider Routing with Cost Optimization
 
-## Phase 1: Cost Model and Configuration
+## Phase 1: Cost Model and Configuration [checkpoint: 35c26a6]
 
 - [x] Task: Define cost schema with input/output token pricing.
   - [x] Add CostConfig interface with model pricing per modality.
@@ -13,14 +13,14 @@
 
 ## Phase 2: Cost-Aware Routing Engine
 
-- [ ] Task: Extend FallbackChain to consider cost in selection.
-  - [ ] Add cost-aware provider selection alongside health checks.
-  - [ ] Add threshold for maximum acceptable cost per request.
-  - [ ] Add tests for cost-based provider selection.
-- [ ] Task: Add cost limit enforcement per request.
-  - [ ] Add optional costLimit parameter to execute calls.
-  - [ ] Skip providers that would exceed cost limit.
-  - [ ] Add tests for cost limit enforcement.
+- [x] Task: Extend FallbackChain to consider cost in selection.
+  - [x] Add cost-aware provider selection alongside health checks.
+  - [x] Add threshold for maximum acceptable cost per request.
+  - [x] Add tests for cost-based provider selection.
+- [x] Task: Add cost limit enforcement per request.
+  - [x] Add optional costLimit parameter to execute calls.
+  - [x] Skip providers that would exceed cost limit.
+  - [x] Add tests for cost limit enforcement.
 
 ## Phase 3: Cost Tracking and Reporting
 

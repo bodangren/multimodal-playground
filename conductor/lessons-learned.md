@@ -25,6 +25,8 @@
 - (2026-04-23, provider_failover_20260423) Error classification: 429 is classified as RateLimited (not Retryable). `isRetryable()` checks if retry-after delay is known. Retryable errors (500/502/503/504) can retry immediately with backoff.
 - (2026-04-23, provider_failover_20260423) Zod v4 schema defaults: `z.object({...}).default({})` does not recursively apply field defaults when the default `{}` is used. Use `.optional()` + `.transform()` to merge with `DEFAULT_*` constants instead.
 - (2026-04-24, provider_failover_20260423) FallbackChain.execute() infinite loop: when skipping providers with open circuits, the `attempts` counter was never incremented. Fixed by adding a `triedInCycle` Set and checking if all providers have been tried.
+- (2026-04-24, advanced_provider_routing_20260424) Adding `modelId` as required field to `ProviderFallbackConfig` breaks existing tests; must add `modelId` to all test provider configs. Consider making it optional with a default empty string to reduce churn.
+- (2026-04-24, advanced_provider_routing_20260424) Cost-based routing: cost lookups use `providerId:modelId` as the key; ensure test cost configs have keys matching the provider IDs used in tests.
 
 ## Patterns That Worked Well
 

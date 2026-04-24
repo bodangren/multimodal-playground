@@ -10,7 +10,7 @@ export const CostModelSchema = z.object({
 
 export type CostModel = z.infer<typeof CostModelSchema>;
 
-export const CostConfigSchema: z.ZodType<CostConfig> = z.object({
+export const CostConfigSchema = z.object({
   models: z.record(z.string(), CostModelSchema).optional().transform((val) => val ?? {}),
   enabled: z.boolean().default(false),
 });

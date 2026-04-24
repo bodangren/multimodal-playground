@@ -28,8 +28,8 @@ describe('FallbackChain with circuit breaker integration', () => {
       const isCircuitOpenB = vi.fn().mockReturnValue(true);
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider, isCircuitOpen: isCircuitOpenA },
-        { id: 'b', execute: failingProvider, isCircuitOpen: isCircuitOpenB },
+        { id: 'a', modelId: 'test-model-a', execute: failingProvider, isCircuitOpen: isCircuitOpenA },
+        { id: 'b', modelId: 'test-model-b', execute: failingProvider, isCircuitOpen: isCircuitOpenB },
       ];
       const chain = new FallbackChain(providers, { logger, maxAttempts: 3, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -50,8 +50,8 @@ describe('FallbackChain with circuit breaker integration', () => {
       const successProvider = createSuccessProvider('b', 'ok');
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider },
-        { id: 'b', execute: successProvider },
+        { id: 'a', modelId: 'test-model-a', execute: failingProvider },
+        { id: 'b', modelId: 'test-model-b', execute: successProvider },
       ];
       const chain = new FallbackChain(providers, { logger, baseDelayMs: 10, maxDelayMs: 100 });
 

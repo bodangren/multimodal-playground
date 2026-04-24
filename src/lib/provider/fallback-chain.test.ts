@@ -25,7 +25,7 @@ describe('FallbackChain', () => {
       const logger = createMockLogger();
       const successProvider = createSuccessProvider('a', 'success');
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: successProvider },
+        { id: 'a', modelId: 'model-a', execute: successProvider },
       ];
       const chain = new FallbackChain(providers, { logger });
 
@@ -38,7 +38,7 @@ describe('FallbackChain', () => {
       const logger = createMockLogger();
       const successProvider = createSuccessProvider('a', 'ok');
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: successProvider },
+        { id: 'a', modelId: 'model-a', execute: successProvider },
       ];
       const chain = new FallbackChain(providers, { logger });
 
@@ -55,8 +55,8 @@ describe('FallbackChain', () => {
       const failingProvider = createFailingProvider('a', 'fail');
       const successProvider = createSuccessProvider('b', 'fallback-success');
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider },
-        { id: 'b', execute: successProvider },
+        { id: 'a', modelId: 'model-a', execute: failingProvider },
+        { id: 'b', modelId: 'model-b', execute: successProvider },
       ];
       const chain = new FallbackChain(providers, { logger, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -71,8 +71,8 @@ describe('FallbackChain', () => {
       const failingProvider = createFailingProvider('a', 'fail');
       const successProvider = createSuccessProvider('b', 'ok');
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider },
-        { id: 'b', execute: successProvider },
+        { id: 'a', modelId: 'model-a', execute: failingProvider },
+        { id: 'b', modelId: 'model-b', execute: successProvider },
       ];
       const chain = new FallbackChain(providers, { logger, baseDelayMs: 50, maxDelayMs: 200 });
 
@@ -86,8 +86,8 @@ describe('FallbackChain', () => {
       const logger = createMockLogger();
       const failingProvider = createFailingProvider('a', 'fail');
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider },
-        { id: 'b', execute: failingProvider },
+        { id: 'a', modelId: 'model-a', execute: failingProvider },
+        { id: 'b', modelId: 'model-b', execute: failingProvider },
       ];
       const chain = new FallbackChain(providers, { logger, maxAttempts: 2, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -105,8 +105,8 @@ describe('FallbackChain', () => {
       const isCircuitOpenB = vi.fn().mockReturnValue(false);
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider, isCircuitOpen: isCircuitOpenA },
-        { id: 'b', execute: successProvider, isCircuitOpen: isCircuitOpenB },
+        { id: 'a', modelId: 'model-a', execute: failingProvider, isCircuitOpen: isCircuitOpenA },
+        { id: 'b', modelId: 'model-b', execute: successProvider, isCircuitOpen: isCircuitOpenB },
       ];
       const chain = new FallbackChain(providers, { logger, maxAttempts: 3, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -122,8 +122,8 @@ describe('FallbackChain', () => {
       const isCircuitOpenB = vi.fn().mockReturnValue(true);
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: createFailingProvider('a', 'fail'), isCircuitOpen: isCircuitOpenA },
-        { id: 'b', execute: createFailingProvider('b', 'fail'), isCircuitOpen: isCircuitOpenB },
+        { id: 'a', modelId: 'model-a', execute: createFailingProvider('a', 'fail'), isCircuitOpen: isCircuitOpenA },
+        { id: 'b', modelId: 'model-b', execute: createFailingProvider('b', 'fail'), isCircuitOpen: isCircuitOpenB },
       ];
       const chain = new FallbackChain(providers, { logger, maxAttempts: 3, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -138,7 +138,7 @@ describe('FallbackChain', () => {
       const recordFailure = vi.fn();
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider, recordFailure },
+        { id: 'a', modelId: 'model-a', execute: failingProvider, recordFailure },
       ];
       const chain = new FallbackChain(providers, { logger, maxAttempts: 1, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -153,7 +153,7 @@ describe('FallbackChain', () => {
       const failingProvider = createFailingProvider('a', 'all failed');
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider },
+        { id: 'a', modelId: 'model-a', execute: failingProvider },
       ];
       const chain = new FallbackChain(providers, { logger, maxAttempts: 1, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -166,8 +166,8 @@ describe('FallbackChain', () => {
       const successProvider = createSuccessProvider('b', 'ok');
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: failingProvider },
-        { id: 'b', execute: successProvider },
+        { id: 'a', modelId: 'model-a', execute: failingProvider },
+        { id: 'b', modelId: 'model-b', execute: successProvider },
       ];
       const chain = new FallbackChain(providers, { logger, baseDelayMs: 10, maxDelayMs: 100 });
 
@@ -189,7 +189,7 @@ describe('FallbackChain', () => {
       const successProvider = createSuccessProvider('a', 'ok');
 
       const providers: ProviderFallbackConfig<unknown, string>[] = [
-        { id: 'a', execute: successProvider },
+        { id: 'a', modelId: 'model-a', execute: successProvider },
       ];
       const chain = new FallbackChain(providers, { logger });
 
@@ -207,6 +207,210 @@ describe('FallbackChain', () => {
 
       const health = chain.getHealth('unknown');
       expect(health).toBeUndefined();
+    });
+  });
+
+  describe('cost-aware routing', () => {
+    const cheapCostConfig = {
+      enabled: true,
+      models: {
+        'cheap:model': {
+          providerId: 'cheap',
+          modelId: 'model',
+          modality: 'text' as const,
+          inputCostPerMillion: 1,
+          outputCostPerMillion: 2,
+        },
+        'expensive:model': {
+          providerId: 'expensive',
+          modelId: 'model',
+          modality: 'text' as const,
+          inputCostPerMillion: 100,
+          outputCostPerMillion: 200,
+        },
+      },
+    };
+
+    it('should skip providers that exceed cost limit', async () => {
+      const logger = createMockLogger();
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'expensive',
+          modelId: 'model',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+        {
+          id: 'cheap',
+          modelId: 'model',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig: cheapCostConfig,
+        costLimit: 0.05,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      const result = await chain.execute({ prompt: 'test' });
+      expect(result).toBe('success');
+      expect(successProvider).toHaveBeenCalledTimes(1);
+      expect(logger.info).toHaveBeenCalledWith(
+        'Skipping provider exceeding cost limit',
+        expect.objectContaining({ providerId: 'expensive' })
+      );
+    });
+
+    it('should execute with cost limit set via context', async () => {
+      const logger = createMockLogger();
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'expensive',
+          modelId: 'model',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+        {
+          id: 'cheap',
+          modelId: 'model',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig: cheapCostConfig,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      const result = await chain.execute({ prompt: 'test' }, { costConfig: cheapCostConfig, costLimit: 0.05 });
+      expect(result).toBe('success');
+      expect(successProvider).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw when all providers exceed cost limit', async () => {
+      const logger = createMockLogger();
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'expensive',
+          modelId: 'model',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+        {
+          id: 'expensive2',
+          modelId: 'model2',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const expensiveCostConfig = {
+        enabled: true,
+        models: {
+          'expensive:model': {
+            providerId: 'expensive',
+            modelId: 'model',
+            modality: 'text' as const,
+            inputCostPerMillion: 100,
+            outputCostPerMillion: 200,
+          },
+          'expensive2:model2': {
+            providerId: 'expensive2',
+            modelId: 'model2',
+            modality: 'text' as const,
+            inputCostPerMillion: 100,
+            outputCostPerMillion: 200,
+          },
+        },
+      };
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig: expensiveCostConfig,
+        costLimit: 0.01,
+        maxAttempts: 4,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      await expect(chain.execute({ prompt: 'test' })).rejects.toThrow('All providers have open circuits');
+    });
+
+    it('should use remaining budget across retries', async () => {
+      const logger = createMockLogger();
+      const expensiveProvider = vi.fn().mockImplementation(async () => {
+        throw new Error('expensive failed');
+      });
+      const cheapProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'expensive',
+          modelId: 'model',
+          execute: expensiveProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+        {
+          id: 'cheap',
+          modelId: 'model',
+          execute: cheapProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000, estimatedOutputTokens: 500 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig: cheapCostConfig,
+        costLimit: 0.5,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      const result = await chain.execute({ prompt: 'test' });
+      expect(result).toBe('success');
+      expect(cheapProvider).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not apply cost filtering when cost config is disabled', async () => {
+      const logger = createMockLogger();
+      const successProvider = vi.fn().mockImplementation(async () => 'success');
+
+      const providers: ProviderFallbackConfig<{ prompt: string }, string>[] = [
+        {
+          id: 'expensive',
+          modelId: 'model',
+          execute: successProvider,
+          getCostInfo: () => ({ estimatedInputTokens: 1000000, estimatedOutputTokens: 500000 }),
+        },
+      ];
+
+      const chain = new FallbackChain(providers, {
+        logger,
+        costConfig: { enabled: false, models: {} },
+        costLimit: 0.01,
+        baseDelayMs: 10,
+        maxDelayMs: 100,
+      });
+
+      const result = await chain.execute({ prompt: 'test' });
+      expect(result).toBe('success');
+      expect(logger.info).not.toHaveBeenCalledWith(
+        'Skipping provider exceeding cost limit',
+        expect.anything()
+      );
     });
   });
 });

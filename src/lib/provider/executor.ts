@@ -143,6 +143,7 @@ export class ProviderExecutor {
 
     return {
       id: providerId,
+      modelId,
       execute: executor,
       isCircuitOpen: circuitBreakerFn,
       recordSuccess,
