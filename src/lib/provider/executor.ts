@@ -1,5 +1,4 @@
 import { loadProviderConfigFromEnv, type Modality, type ProviderConfig } from './config';
-import { loadCostConfigFromEnv, type CostConfig } from './cost-config';
 import { FallbackChain, type ChainOptions, type FallbackMetrics } from './fallback-chain';
 import { ProviderCircuitBreakerManager, FileCircuitBreakerPersistence } from './circuit-breaker-manager';
 import { type ProviderError } from './error-classifier';
