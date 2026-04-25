@@ -8,7 +8,7 @@
 - [x] Task: Build harness runner skeleton.
   - [x] Load fixtures and execute endpoint calls.
   - [x] Add unit tests for fixture parsing and execution flow.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Harness Foundation' (Protocol in workflow.md)
+- [ ] Task: Measure - User Manual Verification 'Phase 1: Harness Foundation' (Protocol in workflow.md)
 
 ## Phase 2: Reporting and Coverage
 
@@ -16,5 +16,5 @@
   - [ ] Add structured pass/fail summary.
   - [ ] Add diagnostics for assertion mismatches.
 - [ ] Task: Add representative benchmark fixtures and smoke run command.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Reporting and Coverage' (Protocol in workflow.md)
+- [ ] Task: Measure - User Manual Verification 'Phase 2: Reporting and Coverage' (Protocol in workflow.md)
 

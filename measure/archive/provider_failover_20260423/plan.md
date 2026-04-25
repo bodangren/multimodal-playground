@@ -10,7 +10,7 @@
   - [x] Record success/failure/latency per call.
   - [x] Compute rolling health status from the window.
   - [x] Write tests for window expiry and threshold transitions.
-- [x] Task: Conductor - User Manual Verification 'Phase 1: Provider Health Module' (Protocol in workflow.md) — CHECKPOINT: 8ef6a98
+- [x] Task: Measure - User Manual Verification 'Phase 1: Provider Health Module' (Protocol in workflow.md) — CHECKPOINT: 8ef6a98
 
 ## Phase 2: Circuit Breaker
 
@@ -22,7 +22,7 @@
   - [x] Integrate circuit breaker with health module.
   - [x] Persist state to disk for restart survival.
   - [x] Write tests for state persistence and cold-start defaults.
-- [x] Task: Conductor - User Manual Verification 'Phase 2: Circuit Breaker' (Protocol in workflow.md) — CHECKPOINT: 8ef6a98
+- [x] Task: Measure - User Manual Verification 'Phase 2: Circuit Breaker' (Protocol in workflow.md) — CHECKPOINT: 8ef6a98
 
 ## Phase 3: Fallback Routing and Retry
 
@@ -39,7 +39,7 @@
   - [x] Skip providers with open circuit breakers.
   - [x] Log failover events with structured JSON.
   - [x] Write tests for circuit breaker integration with fallback.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Fallback Routing and Retry' (Protocol in workflow.md)
+- [ ] Task: Measure - User Manual Verification 'Phase 3: Fallback Routing and Retry' (Protocol in workflow.md)
 
 ## Phase 4: Configuration and Integration Testing
 
@@ -54,4 +54,4 @@
 - [x] Task: Add metrics and observability.
    - [x] Track failover count, per-provider error rate, circuit breaker state changes.
    - [x] Write tests for metric recording.
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Configuration and Integration Testing' (Protocol in workflow.md)
+- [ ] Task: Measure - User Manual Verification 'Phase 4: Configuration and Integration Testing' (Protocol in workflow.md)

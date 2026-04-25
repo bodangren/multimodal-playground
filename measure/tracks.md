@@ -27,3 +27,7 @@ This file tracks all major tracks for the project.
    *Status: Complete*
 
 - [~] [Prompt/Output Evaluation Harness](tracks/prompt_output_eval_harness_20260407/plan.md)
+
+- [ ] **Track: Dead Code Cleanup**
+  *Link: [./tracks/dead_code_cleanup_20260426/](./tracks/dead_code_cleanup_20260426/)*
+  Remove unused OpenAI provider helpers and consolidate duplicate error classification logic.

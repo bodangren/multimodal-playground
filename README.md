@@ -490,5 +490,5 @@ app/
       models/
   page.tsx                # Playground UI
 src/lib/                  # Shared helpers and provider config
-conductor/                # Spec-driven development tracks
+measure/                # Spec-driven development tracks
 ```
