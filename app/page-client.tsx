@@ -151,7 +151,7 @@ function ModelSelect({
     <label>
       {label}
       <select value={value} onChange={(event) => onChange(event.target.value)}>
-        <option value="">Use server default</option>
+        <option value="">Default provider</option>
         {options.map((option) => (
           <option key={option.id} value={option.id}>
             {option.label}
@@ -171,7 +171,7 @@ export default function PlaygroundClient({
   videoModelOptions,
   modelLoadError,
 }: PlaygroundClientProps) {
-  const [textPrompt, setTextPrompt] = useState('Write a short product tagline for an AI playground.');
+  const [textPrompt, setTextPrompt] = useState('Write a refined tagline for a creative platform.');
   const [textModelId, setTextModelId] = useState(textModelOptions[0]?.id ?? '');
   const [textResult, setTextResult] = useState<TextResponse | null>(null);
   const [textError, setTextError] = useState<string | null>(null);
@@ -185,13 +185,13 @@ export default function PlaygroundClient({
   const [structuredError, setStructuredError] = useState<string | null>(null);
   const [structuredLoading, setStructuredLoading] = useState(false);
 
-  const [imagePrompt, setImagePrompt] = useState('A neon robot portrait on a clean studio backdrop.');
+  const [imagePrompt, setImagePrompt] = useState('A minimalist sculpture in a dark void, soft purple illumination.');
   const [imageModelId, setImageModelId] = useState(imageModelOptions[0]?.id ?? '');
   const [imageResult, setImageResult] = useState<ImageResponse | null>(null);
   const [imageError, setImageError] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
 
-  const [speechText, setSpeechText] = useState('Say hello in a friendly tone.');
+  const [speechText, setSpeechText] = useState('Welcome to the generative studio.');
   const [speechModelId, setSpeechModelId] = useState(speechModelOptions[0]?.id ?? '');
   const [speechResult, setSpeechResult] = useState<SpeechResponse | null>(null);
   const [speechError, setSpeechError] = useState<string | null>(null);
@@ -203,7 +203,7 @@ export default function PlaygroundClient({
   const [transcriptionError, setTranscriptionError] = useState<string | null>(null);
   const [transcriptionLoading, setTranscriptionLoading] = useState(false);
 
-  const [videoPrompt, setVideoPrompt] = useState('A cinematic skyline at dusk with soft neon reflections.');
+  const [videoPrompt, setVideoPrompt] = useState('Ethereal waves of light flowing through a dark space.');
   const [videoModelId, setVideoModelId] = useState(videoModelOptions[0]?.id ?? '');
   const [videoResult, setVideoResult] = useState<VideoResponse | null>(null);
   const [videoError, setVideoError] = useState<string | null>(null);
@@ -334,39 +334,38 @@ export default function PlaygroundClient({
   return (
     <main className="shell">
       <section className="hero">
-        <p className="eyebrow">Internal playground</p>
-        <h1>OpenRouter-first multimodal scaffold</h1>
+        <p className="eyebrow">Studio playground</p>
+        <h1>Creative Engine</h1>
         <p className="lede">
-          The app exposes one form per modality and renders normalized responses for text,
-          structured JSON, image, speech, transcription, and video. OpenRouter-backed panels load
-          their model catalogs on the server and expose them as per-panel selectors.
+          A high-fidelity interface for multimodal intelligence. Refined control across 
+          text, data, image, audio, and motion.
         </p>
-        {modelLoadError ? <p className="notice">{modelLoadError}</p> : null}
+        {modelLoadError ? <p className="notice">Connection error: {modelLoadError}</p> : null}
       </section>
 
       <div className="grid">
-        <Panel title="Text generation">
+        <Panel title="Text Generation">
           <form onSubmit={submitText} className="stack">
             <label>
               Prompt
               <textarea value={textPrompt} onChange={(event) => setTextPrompt(event.target.value)} rows={5} />
             </label>
             <ModelSelect
-              label="OpenRouter model"
+              label="Model"
               value={textModelId}
               options={textModelOptions}
               onChange={setTextModelId}
-              helperText="Used for plain text generation."
+              helperText="Target model for plaintext inference."
             />
             <button type="submit" disabled={textLoading}>
-              {textLoading ? 'Generating…' : 'Generate text'}
+              {textLoading ? 'Running…' : 'Generate'}
             </button>
           </form>
           {textError ? <p className="error">{textError}</p> : null}
           {textResult ? <pre>{JSON.stringify(textResult, null, 2)}</pre> : null}
         </Panel>
 
-        <Panel title="Structured output">
+        <Panel title="Structured Data">
           <form onSubmit={submitStructured} className="stack">
             <label>
               Prompt
@@ -377,35 +376,35 @@ export default function PlaygroundClient({
               />
             </label>
             <ModelSelect
-              label="OpenRouter model"
+              label="Model"
               value={structuredModelId}
               options={textModelOptions}
               onChange={setStructuredModelId}
-              helperText="Uses the same text-capable catalog as plain text."
+              helperText="Constraint: schema=product"
             />
             <button type="submit" disabled={structuredLoading}>
-              {structuredLoading ? 'Generating…' : 'Generate JSON'}
+              {structuredLoading ? 'Running…' : 'Generate'}
             </button>
           </form>
           {structuredError ? <p className="error">{structuredError}</p> : null}
           {structuredResult ? <pre>{JSON.stringify(structuredResult, null, 2)}</pre> : null}
         </Panel>
 
-        <Panel title="Image generation">
+        <Panel title="Image Generation">
           <form onSubmit={submitImage} className="stack">
             <label>
               Prompt
               <textarea value={imagePrompt} onChange={(event) => setImagePrompt(event.target.value)} rows={5} />
             </label>
             <ModelSelect
-              label="OpenRouter model"
+              label="Model"
               value={imageModelId}
               options={imageModelOptions}
               onChange={setImageModelId}
-              helperText="Only models that accept text input and return image output appear here."
+              helperText="High-fidelity text-to-image models."
             />
             <button type="submit" disabled={imageLoading}>
-              {imageLoading ? 'Generating…' : 'Generate image'}
+              {imageLoading ? 'Running…' : 'Generate'}
             </button>
           </form>
           {imageError ? <p className="error">{imageError}</p> : null}
@@ -417,21 +416,21 @@ export default function PlaygroundClient({
           ) : null}
         </Panel>
 
-        <Panel title="Speech generation">
+        <Panel title="Speech Synthesis">
           <form onSubmit={submitSpeech} className="stack">
             <label>
-              Text
+              Input text
               <textarea value={speechText} onChange={(event) => setSpeechText(event.target.value)} rows={5} />
             </label>
             <ModelSelect
-              label="OpenRouter model"
+              label="Model"
               value={speechModelId}
               options={speechModelOptions}
               onChange={setSpeechModelId}
-              helperText="Uses text-input, audio-output models from the OpenRouter catalog."
+              helperText="Neural text-to-speech engine."
             />
             <button type="submit" disabled={speechLoading}>
-              {speechLoading ? 'Generating…' : 'Generate speech'}
+              {speechLoading ? 'Running…' : 'Generate'}
             </button>
           </form>
           {speechError ? <p className="error">{speechError}</p> : null}
@@ -446,11 +445,11 @@ export default function PlaygroundClient({
         <Panel title="Transcription">
           <form onSubmit={submitTranscription} className="stack">
             <ModelSelect
-              label="OpenRouter model"
+              label="Model"
               value={transcriptionModelId}
               options={transcriptionModelOptions}
               onChange={setTranscriptionModelId}
-              helperText="Uses audio-input, text-output models from the OpenRouter catalog."
+              helperText="High-accuracy speech-to-text."
             />
             <label>
               Audio file
@@ -461,7 +460,7 @@ export default function PlaygroundClient({
               />
             </label>
             <button type="submit" disabled={transcriptionLoading}>
-              {transcriptionLoading ? 'Transcribing…' : 'Transcribe audio'}
+              {transcriptionLoading ? 'Running…' : 'Transcribe'}
             </button>
           </form>
           {transcriptionError ? <p className="error">{transcriptionError}</p> : null}
@@ -472,21 +471,21 @@ export default function PlaygroundClient({
           ) : null}
         </Panel>
 
-        <Panel title="Video generation">
+        <Panel title="Video Generation">
           <form onSubmit={submitVideo} className="stack">
             <label>
               Prompt
               <textarea value={videoPrompt} onChange={(event) => setVideoPrompt(event.target.value)} rows={5} />
             </label>
             <ModelSelect
-              label="OpenRouter model"
+              label="Model"
               value={videoModelId}
               options={videoModelOptions}
               onChange={setVideoModelId}
-              helperText="Catalog comes from OpenRouter text-to-video models. The OpenRouter video API is still alpha."
+              helperText="Cinematic text-to-video [BETA]"
             />
             <button type="submit" disabled={videoLoading}>
-              {videoLoading ? 'Generating…' : 'Generate video'}
+              {videoLoading ? 'Running…' : 'Generate'}
             </button>
           </form>
           {videoError ? <p className="error">{videoError}</p> : null}

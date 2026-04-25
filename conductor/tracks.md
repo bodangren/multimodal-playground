@@ -24,3 +24,5 @@ This file tracks all major tracks for the project.
 - [x] **Track: Advanced Provider Routing with Cost Optimization**
     *Link: [./archive/advanced_provider_routing_20260424/](./archive/advanced_provider_routing_20260424/)*
     *Status: Complete*
+
+- [~] [Visual Refresh: Define Unique Identity](tracks/visual_refresh_20260425/index.md)
