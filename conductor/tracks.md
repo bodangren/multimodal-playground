@@ -19,10 +19,11 @@ This file tracks all major tracks for the project.
    *Status: Complete*
 - [ ] **Track: Prompt/Output Evaluation Harness**
   *Link: [./tracks/prompt_output_eval_harness_20260407/](./tracks/prompt_output_eval_harness_20260407/)*
-- [ ] **Track: Provider Failover and Fallback Routing**
-   *Link: [./tracks/provider_failover_20260423/](./tracks/provider_failover_20260423/)*
-- [x] **Track: Advanced Provider Routing with Cost Optimization**
-    *Link: [./archive/advanced_provider_routing_20260424/](./archive/advanced_provider_routing_20260424/)*
-    *Status: Complete*
+- [x] **Track: Provider Failover and Fallback Routing**
+   *Link: [./archive/provider_failover_20260423/](./archive/provider_failover_20260423/)*
+   *Status: Complete*
+- [x] **Track: Visual Refresh: Define Unique Identity**
+   *Link: [./archive/visual_refresh_20260425/](./archive/visual_refresh_20260425/)*
+   *Status: Complete*
 
-- [~] [Visual Refresh: Define Unique Identity](tracks/visual_refresh_20260425/index.md)
+- [~] [Prompt/Output Evaluation Harness](tracks/prompt_output_eval_harness_20260407/plan.md)
