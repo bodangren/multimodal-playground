@@ -29,6 +29,7 @@
 - (2026-04-24, advanced_provider_routing_20260424) Cost-based routing: cost lookups use `providerId:modelId` as the key; ensure test cost configs have keys matching the provider IDs used in tests.
 - (2026-04-25, advanced_provider_routing_20260424) When changing return type of a private helper method (e.g., `estimateProviderCost` from `number | undefined` to `{ cost: number; costInfo: CostInfo } | undefined`), update all call sites that reference the old structure (estimatedCost.cost vs estimatedCost alone).
 - (2026-04-25, advanced_provider_routing_20260424) Cost savings calculation: compute maxCost per request BEFORE executing provider, then compare actual cost to maxCost after success. The `recordCostSavings` method calculates `maxCost - actualCost` only when `actualCost < maxCost`.
+- (2026-04-25, prompt_output_eval_harness_20260407) Zod v4 error structure uses `issues` not `errors` - `parsed.error.errors` is undefined; use `parsed.error.issues` for validation error details.
 
 ## Patterns That Worked Well
 
