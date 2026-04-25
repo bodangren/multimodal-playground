@@ -10,7 +10,9 @@
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "eval": "tsx scripts/run-eval.ts",
+    "eval:ci": "tsx scripts/run-eval.ts fixtures/eval-fixtures.json"
   },
   "dependencies": {
     "@ai-sdk/google": "^3.0.53",

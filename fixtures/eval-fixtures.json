@@ -1,0 +1,61 @@
+[
+  {
+    "id": "text-basic-greeting",
+    "description": "Basic greeting response - should contain greeting words",
+    "modality": "text",
+    "input": {
+      "prompt": "Say hello and introduce yourself briefly",
+      "modelId": "openrouter/anthropic/claude-3-haiku"
+    },
+    "assertions": [
+      {
+        "type": "contains",
+        "value": "hello",
+        "description": "Output should contain 'hello'"
+      },
+      {
+        "type": "length",
+        "value": "10-200",
+        "description": "Output should be a reasonable length for a brief greeting"
+      }
+    ],
+    "tags": ["smoke", "text", "greeting"],
+    "enabled": true
+  },
+  {
+    "id": "text-math-question",
+    "description": "Math question - should contain a number result",
+    "modality": "text",
+    "input": {
+      "prompt": "What is 2 + 2? Answer with just the number.",
+      "modelId": "openrouter/anthropic/claude-3-haiku"
+    },
+    "assertions": [
+      {
+        "type": "regex",
+        "value": "(4|four)",
+        "description": "Output should contain 4 or 'four'"
+      }
+    ],
+    "tags": ["smoke", "text", "math"],
+    "enabled": true
+  },
+  {
+    "id": "image-basic-generation",
+    "description": "Basic image generation - should return image data URL",
+    "modality": "image",
+    "input": {
+      "prompt": "A simple red circle on white background",
+      "modelId": "openrouter/black-forest-labs/flame.1.0"
+    },
+    "assertions": [
+      {
+        "type": "regex",
+        "value": "^data:image/(png|jpeg|webp);base64,",
+        "description": "Output should start with valid image data URL"
+      }
+    ],
+    "tags": ["smoke", "image"],
+    "enabled": true
+  }
+]
