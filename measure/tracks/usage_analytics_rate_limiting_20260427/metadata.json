@@ -1,0 +1,10 @@
+{
+  "id": "usage_analytics_rate_limiting_20260427",
+  "title": "Usage Analytics & Rate Limiting",
+  "status": "pending",
+  "created": "2026-04-27",
+  "priority": "medium",
+  "type": "feature",
+  "depends_on": ["job_queue_retry_20260407", "provider_failover_20260423"],
+  "estimated_effort": "medium"
+}

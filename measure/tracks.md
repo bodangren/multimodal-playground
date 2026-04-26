@@ -31,3 +31,7 @@ This file tracks all major tracks for the project.
 - [ ] **Track: Dead Code Cleanup**
   *Link: [./tracks/dead_code_cleanup_20260426/](./tracks/dead_code_cleanup_20260426/)*
   Remove unused OpenAI provider helpers and consolidate duplicate error classification logic.
+
+- [ ] **Track: Usage Analytics & Rate Limiting**
+  *Link: [./tracks/usage_analytics_rate_limiting_20260427/](./tracks/usage_analytics_rate_limiting_20260427/)*
+  Track per-modality usage metrics, implement configurable rate limits, add quota management with soft limits.
