@@ -11,7 +11,7 @@ This file tracks all major tracks for the project.
 - [x] **Track: Re-enable speech generation UI**
   *Link: [./archive/speech_ui_reenable_20260401/](./archive/speech_ui_reenable_20260401/)*
 - [ ] **Track: API documentation and Podman containerization**
-  *Link: [./tracks/docs_and_dockerize_20260401/](./tracks/docs_and_dockerize_20260401/)*
+  *Link: [./archive/docs_and_dockerize_20260401/](./archive/docs_and_dockerize_20260401/)*
 - [x] **Track: Single API key configuration via `.env`**
   *Link: [./archive/single_api_key_env_20260407/](./archive/single_api_key_env_20260407/)*
 - [x] **Track: Generation Job Queue and Retry Semantics**
