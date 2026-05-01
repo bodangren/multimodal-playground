@@ -35,3 +35,7 @@ This file tracks all major tracks for the project.
 - [ ] **Track: Usage Analytics & Rate Limiting**
   *Link: [./tracks/usage_analytics_rate_limiting_20260427/](./tracks/usage_analytics_rate_limiting_20260427/)*
   Track per-modality usage metrics, implement configurable rate limits, add quota management with soft limits.
+
+- [ ] **Track: Persistent Asset Storage & Gallery**
+  *Link: [./tracks/persistent_asset_storage_20260502/](./tracks/persistent_asset_storage_20260502/)*
+  Replace inline base64 data URLs with persistent object storage, add asset metadata layer, and build a gallery UI for browsing generated media.
