@@ -26,7 +26,7 @@ This file tracks all major tracks for the project.
    *Link: [./archive/visual_refresh_20260425/](./archive/visual_refresh_20260425/)*
    *Status: Complete*
 
-- [~] [Prompt/Output Evaluation Harness](tracks/prompt_output_eval_harness_20260407/plan.md)
+- [x] **Track: Prompt/Output Evaluation Harness** *Link: [./archive/prompt_output_eval_harness_20260407/](./archive/prompt_output_eval_harness_20260407/)* — Phase 1 complete (eval fixtures, harness runner, CLI); Phase 2+ deferred
 
 - [ ] **Track: Dead Code Cleanup**
   *Link: [./tracks/dead_code_cleanup_20260426/](./tracks/dead_code_cleanup_20260426/)*
