@@ -39,3 +39,7 @@ This file tracks all major tracks for the project.
 - [ ] **Track: Persistent Asset Storage & Gallery**
   *Link: [./tracks/persistent_asset_storage_20260502/](./tracks/persistent_asset_storage_20260502/)*
   Replace inline base64 data URLs with persistent object storage, add asset metadata layer, and build a gallery UI for browsing generated media.
+
+- [ ] **Track: Serverless-Ready State Persistence**
+  *Link: [./tracks/serverless_state_persistence_20260509/](./tracks/serverless_state_persistence_20260509/)*
+  Replace in-memory JobQueue and JSON file CircuitBreaker with SQLite-backed persistence for serverless compatibility.
