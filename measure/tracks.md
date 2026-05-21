@@ -28,7 +28,7 @@ This file tracks all major tracks for the project.
 
 
 - [ ] **Track: Dead Code Cleanup**
-  *Link: [./tracks/dead_code_cleanup_20260426/](./tracks/dead_code_cleanup_20260426/)*
+  *Link: [./archive/dead_code_cleanup_20260426/](./archive/dead_code_cleanup_20260426/)*
   Remove unused OpenAI provider helpers and consolidate duplicate error classification logic.
 
 - [ ] **Track: Usage Analytics & Rate Limiting**
