@@ -1,0 +1,10 @@
+{
+  "id": "request_dedup_caching_20260524",
+  "title": "Request Deduplication & Result Caching",
+  "status": "pending",
+  "created": "2026-05-24",
+  "priority": "high",
+  "type": "feature",
+  "depends_on": ["job_queue_retry_20260407", "persistent_asset_storage_20260502"],
+  "estimated_effort": "medium"
+}

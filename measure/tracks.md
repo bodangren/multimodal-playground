@@ -27,7 +27,7 @@ This file tracks all major tracks for the project.
    *Status: Complete*
 
 
-- [ ] **Track: Dead Code Cleanup**
+- [x] **Track: Dead Code Cleanup**
   *Link: [./archive/dead_code_cleanup_20260426/](./archive/dead_code_cleanup_20260426/)*
   Remove unused OpenAI provider helpers and consolidate duplicate error classification logic.
 
@@ -42,3 +42,4 @@ This file tracks all major tracks for the project.
 - [ ] **Track: Serverless-Ready State Persistence**
   *Link: [./tracks/serverless_state_persistence_20260509/](./tracks/serverless_state_persistence_20260509/)*
   Replace in-memory JobQueue and JSON file CircuitBreaker with SQLite-backed persistence for serverless compatibility.
+- [ ] **Track: Request Deduplication & Result Caching** *Link: [./tracks/request_dedup_caching_20260524/](./tracks/request_dedup_caching_20260524/)* — Deduplicate in-flight generation requests and cache results to reduce provider quota usage and latency
